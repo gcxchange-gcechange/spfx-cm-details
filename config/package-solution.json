@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-cm-details-client-side-solution",
+    "id": "7f489890-0e76-419f-8efb-f5f23c1cdb4b",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spfx-cm-details description"
+      },
+      "longDescription": {
+        "default": "spfx-cm-details description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-cm-details Feature",
+        "description": "The feature that activates elements of the spfx-cm-details solution.",
+        "id": "80a3dcf4-bc73-4870-9e16-935294065cb4",
+        "version": "1.0.0.0"
+      }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "Office 365 SharePoint Online",
+        "scope": "TermStore.Read.All"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-cm-details.sppkg"
+  }
+}
