@@ -26,6 +26,7 @@ export interface ISpfxCmDetailsState {
     Location: any;
     sec_lvl: any;
     Language: any;
+    NoOpt: boolean;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -48,20 +49,28 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             Work_Arr: [],
             Location: [],
             sec_lvl: [],
-            Language: []
+            Language: [],
+            NoOpt: true
         }
     }
 
     public async componentDidMount(): Promise<void> {
-        await this._geturlID()
+        await this._geturlID();
     }
 
     public _geturlID = async (): Promise<void> => {
-
         const params = new URLSearchParams(window.location.search);
-        const val = params.get('id') as unknown as number;
-        await this._getdetailsopt(val);
-    
+        const val = params.get('id') as unknown as number; // convert to number
+        if (val !== null && val ) { // check if value exist and not empty
+            this.setState({
+                NoOpt: false
+            })
+            await this._getdetailsopt(val);
+        } else {
+            this.setState({
+                NoOpt: true
+            })
+        }
     }
 
     public _getdetailsopt = async (valueid: number): Promise<void> => {
@@ -77,26 +86,35 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         const department_termset_ID = "e86e736d-77a4-447c-8aee-b714be2f64cf";
 
         const _sp: SPFI = getSP(this.props.context);
+        try {
+            const items = await _sp.web.lists.getByTitle("JobOpportunityTest").items.getById(valueid)();
+        
+            console.log(items);
 
-        const items = await _sp.web.lists.getByTitle("JobOpportunityTest").items.getById(valueid)();
-        console.log(items);
+            this.setState({
+                TitleFr: items.JobTitleFrTest,
+                TitleEn: items.JobTitleEnTest,
+                DescEn: items.JobDescriptionEnTest,
+                DescFr: items.JobDescriptionFrTest,
+                JobType: await this._get_terms(job_type_termset_ID,items.JobTypeTest[0].TermGuid),
+                program: await this._get_terms(program_area_termset_ID, items.ProgramAreaTest.TermGuid),
+                Department: await this._get_terms(department_termset_ID, items.DepartmentTest.TermGuid),
+                AppDeadline: items.ApplicationDeadlineDateTest,
+                Nmb_opt: items.NumberOfOpportunitiesTest,
+                Duration: await this._get_terms(duration_termset_ID, items.DurationTesst.TermGuid),
+                Work_Arr: await this._get_terms(work_arr_termset_ID, items.WorkArrangementTest.TermGuid),
+                Location: await this._get_terms(location_termset_ID, items.LocationTest.TermGuid),
+                sec_lvl: await this._get_terms(security_clar_termset_ID, items.SecurityClearanceTest.TermGuid),
+                Language: await this._get_terms(language_termset_ID, items.LanguageRequirementTest.TermGuid),
+            });
 
-        this.setState({
-            TitleFr: items.JobTitleFrTest,
-            TitleEn: items.JobTitleEnTest,
-            DescEn: items.JobDescriptionEnTest,
-            DescFr: items.JobDescriptionFrTest,
-            JobType: await this._get_terms(job_type_termset_ID,items.JobTypeTest[0].TermGuid),
-            program: await this._get_terms(program_area_termset_ID, items.ProgramAreaTest.TermGuid),
-            Department: await this._get_terms(department_termset_ID, items.DepartmentTest.TermGuid),
-            AppDeadline: items.ApplicationDeadlineDateTest,
-            Nmb_opt: items.NumberOfOpportunitiesTest,
-            Duration: await this._get_terms(duration_termset_ID, items.DurationTesst.TermGuid),
-            Work_Arr: await this._get_terms(work_arr_termset_ID, items.WorkArrangementTest.TermGuid),
-            Location: await this._get_terms(location_termset_ID, items.LocationTest.TermGuid),
-            sec_lvl: await this._get_terms(security_clar_termset_ID, items.SecurityClearanceTest.TermGuid),
-            Language: await this._get_terms(language_termset_ID, items.LanguageRequirementTest.TermGuid),
-        });
+        } catch(e) {
+            
+            console.error(e);
+            this.setState({
+                NoOpt: true
+            })
+        }
     }
 
     public _get_terms = async (termsetid: string, termsid: string): Promise<void> => {
@@ -120,16 +138,26 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     } = this.props;
 
     return (
-      <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.welcome}>
-                <h2>{this.state.TitleEn}</h2>
-        </div>
-        <div>
-          <p>
-            {this.state.DescEn}
-          </p>
+        <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
+            {this.state.NoOpt ? (
+
+                <div className={styles.welcome}>
+                    <h2>Sorry! This opportunity do not exist+{this.state.NoOpt}</h2>
+                    <p>Please, try another one or reach out to our support team!</p>
+                </div>
+
+            ) : ( 
+
+           <>
+                <div className={styles.welcome}>
+                    <h2>{this.state.TitleEn}</h2>
+                </div>
                 <div>
-                    <span>Job type ({this.state.JobType})</span>
+                    <p>
+                        {this.state.DescEn}
+                    </p>
+                <div>
+                    <span>Job type ({this.state.JobType}+ {this.state.NoOpt})</span>
                     <span>Application deadline: {this.state.AppDeadline}</span>
                 </div>
                 <div>
@@ -172,7 +200,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </p>
                 </div>
          
-        </div>
+               </div>
+             </>    
+            )
+        }
       </section>
     );
   }
