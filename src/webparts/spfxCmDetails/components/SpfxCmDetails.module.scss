@@ -11,7 +11,7 @@
 }
 
 .welcome {
-  text-align: center;
+  text-align: left;
 }
 
 .welcomeImage {
@@ -31,4 +31,17 @@
       color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
     }
   }
+}
+
+.jobtype_space{
+    padding-right:10%;
+}
+
+.desc_bold{
+    font-weight:600;
+}
+
+.deadline_type_section {
+    padding-bottom: 5%;
+    display:block;
 }

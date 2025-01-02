@@ -156,14 +156,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 <div className={styles.welcome}>
                     <h2>{this.state.TitleEn}</h2>
                 </div>
-                <div>
-                    <p>
+                        <div>
+                            <p className={styles.desc_bold}>
                         {this.state.DescEn}
-                    </p>
-                <div>
-                    <span>Job type ({this.state.JobType}+ {this.state.NoOpt})</span>
-                    <span>Application deadline: {this.state.AppDeadline}</span>
-                </div>
+                            </p>
+                            <div className={styles.deadline_type_section}>
+                        <span className={styles.jobtype_space}>Job type ({this.state.JobType})</span>
+                        <span>Application deadline: {this.state.AppDeadline}</span>
+                    </div>
                 <div>
                     <h3>Opportunity Details:</h3>
                     <p>
