@@ -63,7 +63,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
     public _geturlID = async (): Promise<void> => {
         const params = new URLSearchParams(window.location.search);
-        const val = params.get('id') as unknown as number; // convert to number
+        const val = params.get('JobOpportunityId') as unknown as number; // convert to number
         if (val !== null && val ) { // check if value exist and not empty
             this.setState({
                 NoOpt: false
