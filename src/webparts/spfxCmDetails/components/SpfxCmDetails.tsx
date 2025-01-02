@@ -9,6 +9,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/taxonomy";
 import { TermStore } from '@microsoft/microsoft-graph-types';
 import { SelectLanguage } from "./SelectLanguage";
+import { PrimaryButton } from '@fluentui/react';
 
 export interface ISpfxCmDetailsState {
     TitleFr: string;
@@ -27,6 +28,7 @@ export interface ISpfxCmDetailsState {
     sec_lvl: any;
     Language: any;
     NoOpt: boolean;
+    ContactEmail: string;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -50,7 +52,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             Location: [],
             sec_lvl: [],
             Language: [],
-            NoOpt: true
+            NoOpt: true,
+            ContactEmail: ""
         }
     }
 
@@ -106,6 +109,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 Location: await this._get_terms(location_termset_ID, items.LocationTest.TermGuid),
                 sec_lvl: await this._get_terms(security_clar_termset_ID, items.SecurityClearanceTest.TermGuid),
                 Language: await this._get_terms(language_termset_ID, items.LanguageRequirementTest.TermGuid),
+                ContactEmail: items.ContactEmailTest
             });
 
         } catch(e) {
@@ -199,7 +203,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         {this.state.Language}
                     </p>
                 </div>
-         
+                <PrimaryButton text="Apply" href={`mailto: ${this.state.ContactEmail}?subject=The%20subject%20of%20the%20mail&body=The%20body%20of%20the%20email`}  />
                </div>
              </>    
             )
