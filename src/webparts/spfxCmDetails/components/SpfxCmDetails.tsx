@@ -102,7 +102,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 JobType: await this._get_terms(job_type_termset_ID,items.JobTypeTest[0].TermGuid),
                 program: await this._get_terms(program_area_termset_ID, items.ProgramAreaTest.TermGuid),
                 Department: await this._get_terms(department_termset_ID, items.DepartmentTest.TermGuid),
-                AppDeadline: items.ApplicationDeadlineDateTest,
+                AppDeadline: items.ApplicationDeadlineDateTest.split('T')[0], // convert into format YYYY/MM/DD
                 Nmb_opt: items.NumberOfOpportunitiesTest,
                 Duration: await this._get_terms(duration_termset_ID, items.DurationTesst.TermGuid),
                 Work_Arr: await this._get_terms(work_arr_termset_ID, items.WorkArrangementTest.TermGuid),
@@ -110,8 +110,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 sec_lvl: await this._get_terms(security_clar_termset_ID, items.SecurityClearanceTest.TermGuid),
                 Language: await this._get_terms(language_termset_ID, items.LanguageRequirementTest.TermGuid),
                 ContactEmail: items.ContactEmailTest
-            });
-
+            })
         } catch(e) {
             
             console.error(e);
