@@ -195,7 +195,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </p>
                     <p>
                         <h4>Duration</h4>
-                        {this.state.DurationQuantity}
+                        {this.state.DurationQuantity + " "}
                         {this.props.prefLang === "fr-fr" ? (
                             this.state.Duration.NameFr
                         ) : (
