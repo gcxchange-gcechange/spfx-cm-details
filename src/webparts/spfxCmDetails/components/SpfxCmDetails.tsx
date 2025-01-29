@@ -8,6 +8,7 @@ import { SPFx, graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/taxonomy";
 import { TermStore } from '@microsoft/microsoft-graph-types';
+//import { ITermSet } from "@pnp/graph/taxonomy";
 import { SelectLanguage } from "./SelectLanguage";
 import { PrimaryButton } from '@fluentui/react';
 
@@ -23,12 +24,15 @@ export interface ISpfxCmDetailsState {
     Department: any;
     Nmb_opt: string;
     Duration: any;
+    DurationQuantity: string;
     Work_Arr: any;
     Location: any;
     sec_lvl: any;
     Language: any;
+    LanguageComprehension: string;
     NoOpt: boolean;
     ContactEmail: string;
+    OptId: number;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -48,12 +52,15 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             Department: [],
             Nmb_opt: "",
             Duration: [],
+            DurationQuantity: "",
             Work_Arr: [],
             Location: [],
             sec_lvl: [],
             Language: [],
+            LanguageComprehension: "",
             NoOpt: true,
-            ContactEmail: ""
+            ContactEmail: "",
+            OptId: 0
         }
     }
 
@@ -66,7 +73,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         const val = params.get('JobOpportunityId') as unknown as number; // convert to number
         if (val !== null && val ) { // check if value exist and not empty
             this.setState({
-                NoOpt: false
+                NoOpt: false,
+                OptId: val
             })
             await this._getdetailsopt(val);
         } else {
@@ -78,38 +86,33 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
     public _getdetailsopt = async (valueid: number): Promise<void> => {
         const job_type_termset_ID = "45f37f08-3ff4-4d84-bf21-4a77ddffcf3e";
-        const duration_termset_ID = "ad38f4b6-8aec-4e41-b30b-04c56a2aeeb3";
         const program_area_termset_ID = "bd807536-d8e7-456b-aab0-fae3eecedd8a";
-        //const class_code_termset_ID = "cc00fcc8-4731-4165-a22d-006ddb7b32ce";
-        //const work_schedule_termset_ID = "5a826701-8d58-4c1f-9558-22ea6a98f55f";
-        const security_clar_termset_ID = "31a56cc4-eed9-4229-a6b4-d2fdde94f9e5";
-        const language_termset_ID = "b1048b91-a228-4425-b728-da90be459f27";
-        const work_arr_termset_ID = "74af42a2-246a-41aa-b4bb-8403134f0728";
-        const location_termset_ID = "c6d27982-3d09-43d7-828d-daf6e06be362";
-        const department_termset_ID = "e86e736d-77a4-447c-8aee-b714be2f64cf";
 
         const _sp: SPFI = getSP(this.props.context);
+
         try {
-            const items = await _sp.web.lists.getByTitle("JobOpportunityTest").items.getById(valueid)();
-        
-            console.log(items);
+
+            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
+            console.log(item);
 
             this.setState({
-                TitleFr: items.JobTitleFrTest,
-                TitleEn: items.JobTitleEnTest,
-                DescEn: items.JobDescriptionEnTest,
-                DescFr: items.JobDescriptionFrTest,
-                JobType: await this._get_terms(job_type_termset_ID,items.JobTypeTest[0].TermGuid),
-                program: await this._get_terms(program_area_termset_ID, items.ProgramAreaTest.TermGuid),
-                Department: await this._get_terms(department_termset_ID, items.DepartmentTest.TermGuid),
-                AppDeadline: items.ApplicationDeadlineDateTest.split('T')[0], // convert into format YYYY/MM/DD
-                Nmb_opt: items.NumberOfOpportunitiesTest,
-                Duration: await this._get_terms(duration_termset_ID, items.DurationTesst.TermGuid),
-                Work_Arr: await this._get_terms(work_arr_termset_ID, items.WorkArrangementTest.TermGuid),
-                Location: await this._get_terms(location_termset_ID, items.LocationTest.TermGuid),
-                sec_lvl: await this._get_terms(security_clar_termset_ID, items.SecurityClearanceTest.TermGuid),
-                Language: await this._get_terms(language_termset_ID, items.LanguageRequirementTest.TermGuid),
-                ContactEmail: items.ContactEmailTest
+                TitleFr: item.JobTitleFr,
+                TitleEn: item.JobTitleEn,
+                DescEn: item.JobDescriptionEn,
+                DescFr: item.JobDescriptionFr,
+                JobType: await this._get_terms(job_type_termset_ID,item.JobType[0].TermGuid),
+                program: await this._get_terms(program_area_termset_ID, item.ProgramArea.TermGuid),
+                Department: item.Department,
+                AppDeadline: item.ApplicationDeadlineDate, // convert into format YYYY/MM/DD
+                Nmb_opt: item.NumberOfOpportunities,
+                Duration: item.Duration,
+                DurationQuantity: item.DurationQuantity,
+                Work_Arr:item.WorkArrangement,
+                Location: item.City,
+                sec_lvl: item.SecurityClearance,
+                Language: item.LanguageRequirement,
+                ContactEmail: item.ContactEmail,
+                LanguageComprehension: item.LanguageComprehension
             })
         } catch(e) {
             
@@ -123,6 +126,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     public _get_terms = async (termsetid: string, termsid: string): Promise<void> => {
 
         const graph = graphfi().using(SPFx(this.props.context));
+
         let lang_id = 0;
         if (this.props.prefLang === "fr-fr") {
             lang_id = 1;
@@ -153,11 +157,19 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
            <>
                 <div className={styles.welcome}>
-                    <h2>{this.state.TitleEn}</h2>
+                             <h2>{this.props.prefLang === "fr-fr" ? (
+                                this.state.TitleFr
+                            ) : (
+                                this.state.TitleEn
+                            )}</h2>
                 </div>
                         <div>
                             <p className={styles.desc_bold}>
-                        {this.state.DescEn}
+                                {this.props.prefLang === "fr-fr" ? (
+                                    this.state.DescFr
+                                ) : (
+                                    this.state.DescEn
+                                )}
                             </p>
                             <div className={styles.deadline_type_section}>
                         <span className={styles.jobtype_space}>Job type ({this.state.JobType})</span>
@@ -170,8 +182,12 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         {this.state.program}
                     </p>
                     <p>
-                        <h4>Department</h4>
-                        {this.state.Department}
+                    <h4>Department</h4>
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.Department.NameFr
+                        ) : (
+                            this.state.Department.NameEn
+                        )}
                     </p>
                     <p>
                         <h4>Number of opportunities</h4>
@@ -179,7 +195,13 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </p>
                     <p>
                         <h4>Duration</h4>
-                        {this.state.Duration}
+                        {this.state.DurationQuantity}
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.Duration.NameFr
+                        ) : (
+                            this.state.Duration.NameEn
+                        )}
+                       
                     </p>
                     <p>
                         <h4>Application deadline</h4>
@@ -187,22 +209,40 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </p>
                     <p>
                         <h4>Work arrangement</h4>
-                        {this.state.Work_Arr}
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.Work_Arr.NameFr
+                        ) : (
+                            this.state.Work_Arr.NameEn
+                        )}
                     </p>
                     <p>
                         <h4>Location</h4>
-                        {this.state.Location}
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.Location.NameFr
+                        ) : (
+                            this.state.Location.NameEn
+                        )}
                     </p>
                     <p>
                         <h4>Security level</h4>
-                        {this.state.sec_lvl}
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.sec_lvl.NameFr
+                        ) : (
+                            this.state.sec_lvl.NameEn
+                        )}
+                        
                     </p>
                     <p>
                         <h4>Language requirements</h4>
-                        {this.state.Language}
+                        {this.props.prefLang === "fr-fr" ? (
+                            this.state.Language.NameFr
+                        ) : (
+                            this.state.Language.NameEn
+                        )}
+                        { this.state.LanguageComprehension }
                     </p>
-                </div>
-                <PrimaryButton text="Apply" href={`mailto: ${this.state.ContactEmail}?subject=The%20subject%20of%20the%20mail&body=The%20body%20of%20the%20email`}  />
+                            </div>
+                            <PrimaryButton text="Apply" href={`mailto: ${this.state.ContactEmail}?subject=The%20subject%20of%20the%20mail&body=The%20body%20of%20the%20email&?JobOpportunityId=${this.state.OptId}`} />
                </div>
              </>    
             )
