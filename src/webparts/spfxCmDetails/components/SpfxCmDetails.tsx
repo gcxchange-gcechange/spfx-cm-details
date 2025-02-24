@@ -94,7 +94,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
             const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
             console.log(item);
-
+            
             this.setState({
                 TitleFr: item.JobTitleFr,
                 TitleEn: item.JobTitleEn,
@@ -137,12 +137,12 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         const info: TermStore.Term = await graph.termStore.groups.getById("656c725c-def6-46cd-86df-b51f1b22383e").sets.getById(termsetid).getTermById(termsid)();
         return JSON.parse(JSON.stringify(info.labels))[lang_id].name;
     }
-
+ 
 
   public render(): React.ReactElement<ISpfxCmDetailsProps> {
     const {
       hasTeamsContext,
-    } = this.props;
+      } = this.props;
 
     return (
         <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
@@ -157,11 +157,13 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
            <>
                 <div className={styles.welcome}>
-                             <h2>{this.props.prefLang === "fr-fr" ? (
+                            <h2><span id="JobTitle">{this.props.prefLang === "fr-fr" ? (
                                 this.state.TitleFr
                             ) : (
                                 this.state.TitleEn
-                            )}</h2>
+                            )}</span></h2>
+
+
                 </div>
                         <div>
                             <p className={styles.desc_bold}>
@@ -243,6 +245,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </p>
                             </div>
                             <PrimaryButton text="Apply" href={`mailto: ${this.state.ContactEmail}?subject=The%20subject%20of%20the%20mail&body=The%20body%20of%20the%20email&?JobOpportunityId=${this.state.OptId}`} />
+                            {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
+                                <PrimaryButton className={styles.margin_edit_buttom} text="Edit" href={`https://devgcx.sharepoint.com/sites/CM-test/SitePages/editOpportunity.aspx?JobOpportunityId=${this.state.OptId}`} />
+                            ) : (<></>)}
+                            
+                            
                </div>
              </>    
             )
