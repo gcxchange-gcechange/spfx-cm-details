@@ -102,7 +102,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 DescEn: item.JobDescriptionEn,
                 DescFr: item.JobDescriptionFr,
                 JobType: await this._get_terms(job_type_termset_ID,item.JobType[0].TermGuid),
-                program: await this._get_terms(program_area_termset_ID, item.ProgramArea.TermGuid),
+                program: await this._get_terms(program_area_termset_ID, item.ProgramArea[0].TermGuid),
                 Department: item.Department,
                 AppDeadline: item.ApplicationDeadlineDate.split('T')[0], // convert into format YYYY/MM/DD
                 Nmb_opt: item.NumberOfOpportunities,
