@@ -11,6 +11,19 @@ define([], function() {
     "AppTeamsTabEnvironment": "The app is running in Microsoft Teams",
     "AppOfficeEnvironment": "The app is running in office.com",
     "AppOutlookEnvironment": "The app is running in Outlook",
-    "UnknownEnvironment": "The app is running in an unknown environment"
+      "UnknownEnvironment": "The app is running in an unknown environment",
+      "ApplicationDeadline": "Application deadline",
+      "JobType": "Job Type",
+      "OpportunityDetails": "Opportunity Details",
+      "ProgramArea": "Program Area",
+      "Department": "Department",
+      "NumberOpportunities": "Number of Opportunities",
+      "Duration": "Duration for opportunity",
+      "WorkArrangement": "Work arrangement",
+      "Location": "Location",
+      "SecurityLevel": "Security level",
+      "LanguageRequirements": "Language requirements",
+      "Apply": "Apply",
+      "Edit": "Edit"
   }
 });
