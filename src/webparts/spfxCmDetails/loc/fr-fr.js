@@ -25,7 +25,8 @@ define([], function () {
         "SecurityLevel": "Niveau de sécurité",
         "LanguageRequirements": "Exigences linguistiques",
         "Apply": "Postuler",
-        "Edit": "Modifier"
+        "Edit": "Modifier",
+        "Retention": "Pour que le Carrefour d’emploi soit toujours à jour et pertinent, <strong>les messages de possibilité d’emploi sont automatiquement supprimés six mois après la date limite de candidature.</strong> Nous vous recommandons donc d’en sauvegarder une copie pour vos dossiers"
 
     }
 });
