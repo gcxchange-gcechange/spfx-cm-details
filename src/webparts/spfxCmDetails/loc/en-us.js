@@ -24,6 +24,7 @@ define([], function() {
       "SecurityLevel": "Security level",
       "LanguageRequirements": "Language requirements",
       "Apply": "Apply",
-      "Edit": "Edit"
+      "Edit": "Edit",
+      "Retention": "To keep the Career Marketplace fresh and relevant, <strong>opportunity posts are automatically removed six months after the application deadline.</strong> We recommend saving a copy for your records."
   }
 });
