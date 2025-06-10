@@ -24,6 +24,9 @@ define([], function() {
       "SecurityLevel": "Security level",
       "LanguageRequirements": "Language requirements",
       "Apply": "Apply",
-      "Edit": "Edit"
+      "Edit": "Edit",
+      "Expired": "This opportunity has expired. Applications are now closed.",
+      "ApplicationsClosed": "Applications Closed",
+      "Delete": "Delete"
   }
 });

@@ -49,3 +49,29 @@
 .margin_edit_buttom {
     margin-left: 5%;
 }
+
+.expiredBanner {
+  align-content: center;
+  background-color: #fff0f1;
+  font-weight: 700;
+  height: 60px;
+  width: 100%;
+  border-radius: 8px;
+
+  p {
+    color: #741a20;
+    font-size: medium;
+    margin: 0;
+    text-align: center;
+    padding: 20px 10px;
+
+    i {
+      border-radius: 30px;
+      padding: 4px;
+      border: 2px solid #A1252E;
+      color: #A1252E;
+      font-size: small;
+      font-weight: 700;
+    }
+  }
+}

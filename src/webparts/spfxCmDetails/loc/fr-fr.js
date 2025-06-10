@@ -25,7 +25,9 @@ define([], function () {
         "SecurityLevel": "Niveau de sécurité",
         "LanguageRequirements": "Exigences linguistiques",
         "Apply": "Postuler",
-        "Edit": "Modifier"
-
+        "Edit": "Modifier",
+        "Expired": "Cette opportunité est expirée. Les candidatures sont désormais closes.",
+        "ApplicationsClosed": "Candidatures fermées",
+        "Delete": "Supprimer"
     }
 });

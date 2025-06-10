@@ -24,6 +24,9 @@ declare interface ISpfxCmDetailsWebPartStrings {
     LanguageRequirements: string;
     Apply: string;
     Edit: string;
+    Expired: string;
+    ApplicationsClosed: string;
+    Delete: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {
