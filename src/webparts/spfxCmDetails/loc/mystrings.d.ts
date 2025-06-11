@@ -27,6 +27,10 @@ declare interface ISpfxCmDetailsWebPartStrings {
     Expired: string;
     ApplicationsClosed: string;
     Delete: string;
+    oppDeletedTitle: string;
+    oppDeletedSubText: string;
+    contactUs: string;
+    cmHomePage: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {

@@ -37,6 +37,10 @@
       {
         "resource": "Office 365 SharePoint Online",
         "scope": "TermStore.Read.All"
+      },
+      {
+        "resource": "dgcx_dev_appreg_cm_listmgmt",
+        "scope": "user_impersonation"
       }
     ]
   },

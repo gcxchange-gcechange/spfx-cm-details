@@ -10,8 +10,14 @@ import "@pnp/graph/taxonomy";
 import { TermStore } from '@microsoft/microsoft-graph-types';
 //import { ITermSet } from "@pnp/graph/taxonomy";
 import { SelectLanguage } from "./SelectLanguage";
-import { PrimaryButton, Icon } from '@fluentui/react';
+import { PrimaryButton, DefaultButton, Icon } from '@fluentui/react';
 import * as strings from 'SpfxCmDetailsWebPartStrings';
+import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
+
+// @ts-expect-error qas
+import createDOMPurify from 'dompurify';
+
+const DOMPurify = createDOMPurify(window);
 
 export interface ISpfxCmDetailsState {
     TitleFr: string;
@@ -35,10 +41,26 @@ export interface ISpfxCmDetailsState {
     ContactEmail: string;
     OptId: number;
     Expired: boolean;
+    pageLoading: boolean;
+    deleteLoading: boolean;
+    deleted: boolean;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
     public strings = SelectLanguage(this.props.prefLang);
+
+    /*
+        REPLACE THESE FOR YOUR BUILD
+    */
+    private env = {
+        careerMarketplaceTermSetId: '',
+        jobTypeTermSetId: '',
+        programAreaTermSetId: '',
+        authClientId: '',
+        deleteApiUrl: '',
+        careerMarketplaceHomePage: '',
+        editOpportunityPage: ''
+    }
 
     constructor(props: ISpfxCmDetailsProps, state: ISpfxCmDetailsState) {
         super(props);
@@ -63,7 +85,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             NoOpt: true,
             ContactEmail: "",
             OptId: 0,
-            Expired: false
+            Expired: false,
+            pageLoading: true,
+            deleteLoading: false,
+            deleted: false
         }
     }
 
@@ -78,19 +103,17 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             this.setState({
                 NoOpt: false,
                 OptId: val
-            })
+            });
             await this._getdetailsopt(val);
         } else {
             this.setState({
-                NoOpt: true
+                NoOpt: true,
+                pageLoading: false
             })
         }
     }
 
     public _getdetailsopt = async (valueid: number): Promise<void> => {
-        const job_type_termset_ID = "45f37f08-3ff4-4d84-bf21-4a77ddffcf3e";
-        const program_area_termset_ID = "bd807536-d8e7-456b-aab0-fae3eecedd8a";
-
         const _sp: SPFI = getSP(this.props.context);
 
         try {
@@ -98,15 +121,15 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
             console.log(item);
 
-            const expired = new Date() >= new Date(`${item.ApplicationDeadlineDate} UTC`);
+            const expired = new Date() >= new Date(item.ApplicationDeadlineDate);
             
             this.setState({
                 TitleFr: item.JobTitleFr,
                 TitleEn: item.JobTitleEn,
                 DescEn: item.JobDescriptionEn,
                 DescFr: item.JobDescriptionFr,
-                JobType: await this._get_terms(job_type_termset_ID,item.JobType[0].TermGuid),
-                program: await this._get_terms(program_area_termset_ID, item.ProgramArea[0].TermGuid),
+                JobType: await this._get_terms(this.env.jobTypeTermSetId, item.JobType[0].TermGuid),
+                program: await this._get_terms(this.env.programAreaTermSetId, item.ProgramArea[0].TermGuid),
                 Department: item.Department,
                 AppDeadline: item.ApplicationDeadlineDate.split('T')[0], // convert into format YYYY/MM/DD
                 Nmb_opt: item.NumberOfOpportunities,
@@ -118,12 +141,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,
                 LanguageComprehension: item.LanguageComprehension,
-                Expired: expired
+                Expired: expired,
+                pageLoading: false
             })
         } catch(e) {
             console.error(e);
             this.setState({
-                NoOpt: true
+                NoOpt: true,
+                pageLoading: false
             });
         }
     }
@@ -139,8 +164,45 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             lang_id = 0;
         }
 
-        const info: TermStore.Term = await graph.termStore.groups.getById("656c725c-def6-46cd-86df-b51f1b22383e").sets.getById(termsetid).getTermById(termsid)();
+        const info: TermStore.Term = await graph.termStore.groups.getById(this.env.careerMarketplaceTermSetId).sets.getById(termsetid).getTermById(termsid)();
         return JSON.parse(JSON.stringify(info.labels))[lang_id].name;
+    }
+
+    private delete = async (): Promise<void> => {
+        this.setState({
+            deleteLoading: true
+        });
+
+        try {
+            const aadClient: AadHttpClient = await this.props.context.aadHttpClientFactory.getClient(this.env.authClientId);
+
+            const postOptions: IHttpClientOptions = {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: `{ItemId: ${this.state.OptId.toString()}}`
+            };
+
+            const response: HttpClientResponse = await aadClient.post(
+                this.env.deleteApiUrl,
+                AadHttpClient.configurations.v1,
+                postOptions
+            );
+
+            if (response.ok) {
+                this.setState({deleteLoading: false, deleted: true});
+            } else {
+                this.setState({deleteLoading: false});
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            this.setState({deleteLoading: false});
+        }
+    }
+
+    private getDeletedSubText = (): string => {
+        return DOMPurify.sanitize(strings.oppDeletedSubText.replace('{jobTitle}', this.props.prefLang === 'fr-fr' ? this.state.TitleFr : this.state.TitleEn));
     }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
@@ -148,7 +210,24 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             hasTeamsContext,
         } = this.props;
 
-        return (
+        return this.state.deleted ? (
+            <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
+                <div className={styles.deletedSection}>
+                    <h2>{strings.oppDeletedTitle}</h2>
+                    <p dangerouslySetInnerHTML={{__html: this.getDeletedSubText()}}/>
+                    <div className={styles.deletedButtons}>
+                        <DefaultButton
+                            text={strings.contactUs}
+                            href={`mailto: support-soutien@gcx-gce.gc.ca`}
+                        />
+                        <PrimaryButton
+                            text={strings.cmHomePage}
+                            href={this.env.careerMarketplaceHomePage}
+                        />
+                    </div>
+                </div>
+            </section>) : 
+            (
             <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 {this.state.NoOpt ? (
 
@@ -233,11 +312,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         )}
 
                         {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
-                            <PrimaryButton className={styles.margin_edit_buttom} text={strings.Edit} href={`https://gcxgce.sharepoint.com/sites/CareerMarketplace/SitePages/editOpportunity-uat.aspx?JobOpportunityId=${this.state.OptId}`} />
+                            <PrimaryButton className={styles.margin_edit_buttom} text={strings.Edit} href={`${this.env.editOpportunityPage}${this.state.OptId}`} />
                         ) : (<></>)}   
 
                         {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
-                            <PrimaryButton className={styles.margin_edit_buttom} text={strings.Delete} styles={{rootHovered: {backgroundColor: 'rgb(227 16 16)', color: '#FFF'}, root: {backgroundColor: '#A60404', color: '#FFF'}}} />
+                            <PrimaryButton onClick={this.delete} className={styles.margin_edit_buttom} text={strings.Delete} styles={{rootHovered: {backgroundColor: 'rgb(227 16 16)', color: '#FFF'}, root: {backgroundColor: '#A60404', color: '#FFF'}}} />
                         ) : (<></>)}    
                 </div>
                 </>    

@@ -75,3 +75,13 @@
     }
   }
 }
+
+.deletedSection {
+  p {
+    margin: 40px 0;
+  }
+  .deletedButtons {
+    display: flex;
+    gap: 15px;
+  }
+}

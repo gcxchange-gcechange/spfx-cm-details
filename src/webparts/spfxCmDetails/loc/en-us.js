@@ -27,6 +27,10 @@ define([], function() {
       "Edit": "Edit",
       "Expired": "This opportunity has expired. Applications are now closed.",
       "ApplicationsClosed": "Applications Closed",
-      "Delete": "Delete"
+      "Delete": "Delete",
+      "oppDeletedTitle": "The Opportunity has been Deleted",
+      "oppDeletedSubText": "<b>{jobTitle}</b> has been deleted. You have 30 days to contact our Support team to recover the opportunity if you change your mind. Please provide our Support team with the <b>post title</b> and <b>date that the post was deleted</b> when requesting recovery.</br></br><b>After 30 days, the opportunity will be permanently deleted.</b>",
+      "contactUs": "Contact Us",
+      "cmHomePage": "Career Marketplace Homepage"
   }
 });
