@@ -32,6 +32,10 @@ define([], function () {
         "oppDeletedTitle": "L'opportunité a été supprimée",
         "oppDeletedSubText": "L’offre d’emploi <b>{jobTitle}</b> est supprimée. Si vous souhaitez la récupérer après coup, vous devrez communiquer avec l’équipe de soutien dans les 30 jours suivant sa suppression.</br></br>Vous devrez alors lui fournir le <b>titre de votre offre d’emploi</b> ainsi que sa <b>date de suppression</b>.",
         "contactUs": "Contactez nous",
-        "cmHomePage": "Page d'accueil du Career Marketplace"
+        "cmHomePage": "Page d'accueil du Career Marketplace",
+        "loading": "Chargement...",
+        "dialogTitle": "Delete Opportunity",
+        "dialogText": "<b>Voulez vous vraiment supprimer cette offre d’emploi?</b> Si vous souhaitez la récupérer après coup, vous devrez communiquer avec l’équipe de soutien dans les 30 jours suivant sa suppression. Passé ce délai, l’offre d’emploi sera supprimée définitivement.",
+        "cancel": "Annuler"
     }
 });

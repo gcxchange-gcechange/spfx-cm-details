@@ -31,6 +31,10 @@ declare interface ISpfxCmDetailsWebPartStrings {
     oppDeletedSubText: string;
     contactUs: string;
     cmHomePage: string;
+    loading: string;
+    dialogTitle: string;
+    dialogText: string;
+    cancel: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {
