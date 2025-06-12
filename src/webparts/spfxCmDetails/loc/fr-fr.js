@@ -36,6 +36,7 @@ define([], function () {
         "loading": "Chargement...",
         "dialogTitle": "Delete Opportunity",
         "dialogText": "<b>Voulez vous vraiment supprimer cette offre d’emploi?</b> Si vous souhaitez la récupérer après coup, vous devrez communiquer avec l’équipe de soutien dans les 30 jours suivant sa suppression. Passé ce délai, l’offre d’emploi sera supprimée définitivement.",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "Retention": "Pour que le Carrefour d’emploi soit toujours à jour et pertinent, <strong>les messages de possibilité d’emploi sont automatiquement supprimés six mois après la date limite de candidature.</strong> Nous vous recommandons donc d’en sauvegarder une copie pour vos dossiers"
     }
 });
