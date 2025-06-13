@@ -108,6 +108,16 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         await this._geturlID();
     }
 
+        //this works but gives me an inifite loop for can not find web
+    // public async componentDidUpdate(prevPros: ISpfxCmDetailsProps, prevState: ISpfxCmDetailsState): Promise<void> {
+
+    //     if (prevState.NoOpt !== this.state.NoOpt) {
+    //         await this._geturlID();
+    //     }
+        
+    // }
+       
+
     public _geturlID = async (): Promise<void> => {
         const params = new URLSearchParams(window.location.search);
         const val = params.get('JobOpportunityId') as unknown as number; // convert to number
