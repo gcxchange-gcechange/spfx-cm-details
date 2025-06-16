@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
 import styles from './SpfxCmDetails.module.scss';
 import type { ISpfxCmDetailsProps } from './ISpfxCmDetailsProps';
@@ -14,6 +15,8 @@ import { PrimaryButton, DefaultButton, IconButton, Icon, Modal } from '@fluentui
 import * as strings from 'SpfxCmDetailsWebPartStrings';
 import parse from 'html-react-parser';
 import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
+
+
 
 // @ts-expect-error need this for some reason, * won't work.
 import createDOMPurify from 'dompurify';
@@ -109,13 +112,30 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     }
 
         //this works but gives me an inifite loop for can not find web
-    // public async componentDidUpdate(prevPros: ISpfxCmDetailsProps, prevState: ISpfxCmDetailsState): Promise<void> {
+     public async componentDidUpdate(prevPros: ISpfxCmDetailsProps, prevState: ISpfxCmDetailsState): Promise<void> {
 
-    //     if (prevState.NoOpt !== this.state.NoOpt) {
-    //         await this._geturlID();
-    //     }
+        if (prevState.OptId !== this.state.OptId) {
+            console.log("I updated", this.state.OptId);
+           
+            const val = this.state.OptId;
+      
+         try
+         {
+          if (val !== null && val !== undefined) {
+            //https://devgcx.sharepoint.com/sites/CM-test/SitePages/Job-Opportunity.aspx?JobOpportunityId=169 ----- use this one
+            // const hrefUrl = window.location.href = this.props.context.pageContext.site.absoluteUrl + `/SitePages/JobListing.aspx?JobOpportuniyId=${this.state.OptId}`;
+            
+            // console.log("hrefURL", hrefUrl);
+            // If JobOpportunityId is present, fetch the item
+          console.log("hello");
+          }
+
+         } catch (error) {
+            console.error('Error during onInit:', error);
+         }
+        }
         
-    // }
+    }
        
 
     public _geturlID = async (): Promise<void> => {
@@ -141,7 +161,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         try {
 
             const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
-            console.log(item);
+            console.log("item",item);
 
             const expired = new Date() >= new Date(item.ApplicationDeadlineDate);
             
@@ -232,6 +252,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
+        console.log("OptNu", this.state.OptId);
+        console.log("noOpt", this.state.NoOpt);
         const {
             hasTeamsContext,
         } = this.props;
