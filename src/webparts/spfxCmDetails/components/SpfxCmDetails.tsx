@@ -136,7 +136,6 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         try {
 
             const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
-            console.log("item",item);
 
             const expired = new Date() >= new Date(item.ApplicationDeadlineDate);
             
@@ -227,8 +226,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
-        console.log("OptNu", this.state.OptId);
-        console.log("noOpt", this.state.NoOpt);
+
         const {
             hasTeamsContext,
         } = this.props;
