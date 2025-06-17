@@ -48,6 +48,7 @@ export interface ISpfxCmDetailsState {
     deleteLoading: boolean;
     deleted: boolean;
     modalOpen: boolean;
+    isBackNavigation:boolean;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -100,12 +101,18 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             pageLoading: true,
             deleteLoading: false,
             deleted: false,
-            modalOpen: false
+            modalOpen: false,
+            isBackNavigation: false,
         }
 
         if (!this.envValid()) 
             console.error('Check your env settings, something is missing!');
     }
+
+    // private handleBackNavigation = (e:PopStateEvent): void => {
+    //     this.setState({isBackNavigation: true});
+    //     console.log("Back button pressed")
+    // }
 
     public async componentDidMount(): Promise<void> {
         await this._geturlID();
@@ -121,13 +128,12 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
       
          try
          {
-          if (val !== null && val !== undefined) {
+          if ((val !== null && val !== undefined ) && this.state.isBackNavigation === true ) {
+            //https://devgcx.sharepoint.com/sites/CM-test/SitePages/JobListing.aspx?JobOpportuniyId=169
             //https://devgcx.sharepoint.com/sites/CM-test/SitePages/Job-Opportunity.aspx?JobOpportunityId=169 ----- use this one
-            // const hrefUrl = window.location.href = this.props.context.pageContext.site.absoluteUrl + `/SitePages/JobListing.aspx?JobOpportuniyId=${this.state.OptId}`;
-            
-            // console.log("hrefURL", hrefUrl);
-            // If JobOpportunityId is present, fetch the item
-          console.log("hello");
+            window.location.href = this.props.context.pageContext.site.absoluteUrl + `/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}`;
+            console.log("absoluteUrl", this.props.context.pageContext.site.absoluteUrl +`/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}` )
+    
           }
 
          } catch (error) {
@@ -390,7 +396,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             <PrimaryButton 
                                 className={styles.margin_edit_buttom} 
                                 text={this.strings.Edit} 
-                                href={`${this.env.editOpportunityPage}${this.state.OptId}`} 
+                                onClick={() => {
+                                    this.setState({isBackNavigation: true})
+                                    window.location.href =`${this.env.editOpportunityPage}${this.state.OptId}`
+                                }}
                                 aria-labelledby='JobTitle'
                             />
                         ) : (<></>)}   
