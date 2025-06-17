@@ -118,7 +118,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         await this._geturlID();
     }
 
-        //this works but gives me an inifite loop for can not find web
+
      public async componentDidUpdate(prevPros: ISpfxCmDetailsProps, prevState: ISpfxCmDetailsState): Promise<void> {
 
         if (prevState.OptId !== this.state.OptId) {
@@ -129,7 +129,6 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
          try
          {
           if ((val !== null && val !== undefined ) && this.state.isBackNavigation === true ) {
-            //https://devgcx.sharepoint.com/sites/CM-test/SitePages/JobListing.aspx?JobOpportuniyId=169
             //https://devgcx.sharepoint.com/sites/CM-test/SitePages/Job-Opportunity.aspx?JobOpportunityId=169 ----- use this one
             window.location.href = this.props.context.pageContext.site.absoluteUrl + `/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}`;
             console.log("absoluteUrl", this.props.context.pageContext.site.absoluteUrl +`/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}` )
