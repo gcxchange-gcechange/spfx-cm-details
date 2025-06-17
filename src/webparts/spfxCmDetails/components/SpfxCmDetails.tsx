@@ -48,7 +48,6 @@ export interface ISpfxCmDetailsState {
     deleteLoading: boolean;
     deleted: boolean;
     modalOpen: boolean;
-    isBackNavigation:boolean;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -102,44 +101,15 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             deleteLoading: false,
             deleted: false,
             modalOpen: false,
-            isBackNavigation: false,
         }
 
         if (!this.envValid()) 
             console.error('Check your env settings, something is missing!');
     }
 
-    // private handleBackNavigation = (e:PopStateEvent): void => {
-    //     this.setState({isBackNavigation: true});
-    //     console.log("Back button pressed")
-    // }
 
     public async componentDidMount(): Promise<void> {
         await this._geturlID();
-    }
-
-
-     public async componentDidUpdate(prevPros: ISpfxCmDetailsProps, prevState: ISpfxCmDetailsState): Promise<void> {
-
-        if (prevState.OptId !== this.state.OptId) {
-            console.log("I updated", this.state.OptId);
-           
-            const val = this.state.OptId;
-      
-         try
-         {
-          if ((val !== null && val !== undefined ) && this.state.isBackNavigation === true ) {
-            //https://devgcx.sharepoint.com/sites/CM-test/SitePages/Job-Opportunity.aspx?JobOpportunityId=169 ----- use this one
-            window.location.href = this.props.context.pageContext.site.absoluteUrl + `/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}`;
-            console.log("absoluteUrl", this.props.context.pageContext.site.absoluteUrl +`/SitePages/Job-Opportunity.aspx?JobOpportuniyId=${this.state.OptId}` )
-    
-          }
-
-         } catch (error) {
-            console.error('Error during onInit:', error);
-         }
-        }
-        
     }
        
 
@@ -396,7 +366,6 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 className={styles.margin_edit_buttom} 
                                 text={this.strings.Edit} 
                                 onClick={() => {
-                                    this.setState({isBackNavigation: true})
                                     window.location.href =`${this.env.editOpportunityPage}${this.state.OptId}`
                                 }}
                                 aria-labelledby='JobTitle'
