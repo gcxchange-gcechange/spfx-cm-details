@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable dot-notation */
 import * as React from 'react';
 import styles from './SpfxCmDetails.module.scss';
@@ -358,7 +359,9 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             <PrimaryButton 
                                 className={styles.margin_edit_buttom} 
                                 text={this.strings.Edit} 
-                                href={`${this.env.editOpportunityPage}${this.state.OptId}`} 
+                                onClick={() => {
+                                    window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
+                                }}
                                 aria-labelledby='JobTitle'
                             />
                         ) : (<></>)}   
