@@ -135,7 +135,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             await this._getdetailsopt(val);
         } else {
             this.setState({
-                NoOpt: true
+                NoOpt: true,
+                pageLoading: false
             })
         }
     }
