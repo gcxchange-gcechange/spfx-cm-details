@@ -111,12 +111,27 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
     public _geturlID = async (): Promise<void> => {
         const params = new URLSearchParams(window.location.search);
-        const val = params.get('JobOpportunityId') as unknown as number; // convert to number
-        if (val !== null && val ) { // check if value exist and not empty
+        let val: number;
+
+        val = params.get('JobOpportunityId') as unknown as number; // convert to number
+
+        if (val !== null && val) { // check if value exist and not empty
+            sessionStorage.setItem("JobOpportunityId", val.toString());
+        } else {
+            const sessionVal =  sessionStorage.getItem("JobOpportunityId");
+
+            if (sessionVal !== null && sessionVal) {
+                val = sessionVal as unknown as number;
+            }
+        }
+
+        console.log("_geturlID val", val);
+
+        if (val !== null && val) { // check if value exist and not empty
             this.setState({
                 NoOpt: false,
                 OptId: val
-            });
+            })
             await this._getdetailsopt(val);
         } else {
             this.setState({
@@ -125,7 +140,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             })
         }
     }
-
+    
     public _getdetailsopt = async (valueid: number): Promise<void> => {
         const _sp: SPFI = getSP(this.props.context);
 
