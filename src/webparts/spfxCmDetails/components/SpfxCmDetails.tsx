@@ -40,6 +40,7 @@ export interface ISpfxCmDetailsState {
     LanguageComprehension: string;
     NoOpt: boolean;
     ContactEmail: string;
+    ContactName: string;
     OptId: number;
     Expired: boolean;
     pageLoading: boolean;
@@ -93,6 +94,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             LanguageComprehension: "",
             NoOpt: true,
             ContactEmail: "",
+            ContactName: "",
             OptId: 0,
             Expired: false,
             pageLoading: true,
@@ -146,7 +148,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
         try {
 
-            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
+            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ContactName", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
             console.log(item);
 
             const expired = new Date() >= new Date(item.ApplicationDeadlineDate);
@@ -168,6 +170,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 sec_lvl: item.SecurityClearance,
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,
+                ContactName: item.ContactName,
                 LanguageComprehension: item.LanguageComprehension,
                 Expired: expired,
                 pageLoading: false
@@ -236,6 +239,20 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     private getDeletedSubText = (): string => {
         return DOMPurify.sanitize(this.strings.oppDeletedSubText.replace('{jobTitle}', this.props.prefLang === 'fr-fr' ? this.state.TitleFr : this.state.TitleEn));
     }
+
+    private populateEmailTemplate = (): string => {
+        const template = this.props.prefLang === 'fr-fr' ?
+        "Bonjour,\n\nVeuillez récupérer la possibilité d’emploi supprimée dans le Carrefour de carrière, intitulée {jobTitle}, que j’ai supprimée le {date}.\n\nMerci,\n\n{name}" :
+        "Hello,\n\nPlease recover the deleted Career Marketplace opportunity titled {jobTitle}, which I deleted on {date}.\n\nThank you,\n\n{name}";
+        const today = new Date();
+        const nameSplit = this.state.ContactName.split(',');
+        const name = nameSplit.length > 1 ? `${nameSplit[1]} ${nameSplit[0]}` : this.state.ContactName;
+
+        return template
+            .replace('{jobTitle}', this.props.prefLang === 'fr-fr' ? this.state.TitleFr : this.state.TitleEn)
+            .replace('{date}', today.toLocaleDateString())
+            .replace('{name}', name);
+    }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
         const {
@@ -252,7 +269,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     <div className={styles.deletedButtons}>
                         <DefaultButton
                             text={this.strings.contactUs}
-                            href={`mailto: support-soutien@gcx-gce.gc.ca`}
+                            href={`mailto:support-soutien@gcx-gce.gc.ca?subject=${this.strings.emailSubject}&body=${encodeURIComponent(this.populateEmailTemplate())}`}
                             aria-labelledby={`cm-deleted-${this.state.OptId}-title`}
                         />
                         <PrimaryButton
