@@ -36,6 +36,7 @@ define([], function() {
       "dialogTitle": "Delete Opportunity",
       "dialogText": "<b>Are you sure you want to delete this opportunity?</b> Once deleted, you will have 30 days to contact our support team to recover the opportunity if you change your mind. After 30 days, the opportunity will be permanently deleted.",
       "cancel": "Cancel",
-      "Retention": "To keep the Career Marketplace fresh and relevant, <strong>opportunity posts are automatically removed six months after the application deadline.</strong> We recommend saving a copy for your records."
+      "Retention": "To keep the Career Marketplace fresh and relevant, <strong>opportunity posts are automatically removed six months after the application deadline.</strong> We recommend saving a copy for your records.",
+      "emailSubject": "Request to recover deleted Career Marketplace opportunity post"
   }
 });

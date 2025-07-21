@@ -36,6 +36,7 @@ declare interface ISpfxCmDetailsWebPartStrings {
     dialogTitle: string;
     dialogText: string;
     cancel: string;
+    emailSubject: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {
