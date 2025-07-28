@@ -15,7 +15,7 @@ jobs:
   steps:
 
   - script: |
-      npm audiot --audit-level=high --json > npm-audit.json || true
+      npm audit --audit-level=high --json > npm-audit.json || true
       cat npm-audit.json
     displayName: 'Run npm audit'
 
