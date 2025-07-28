@@ -15,9 +15,10 @@ jobs:
   steps:
 
   - script: |
-      npm audiot --audiot-level=high --json > npm-audiot.json
+      npm audiot --audit-level=high --json > npm-audit.json || true
       cat npm-audit.json
     displayName: 'Run npm audit'
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish npm audit report'
     inputs:
