@@ -25,7 +25,8 @@ jobs:
       echo "Critical vulnerabilities: $critical"
 
       if [ "$high" -gt 0 ] || [ "$critical" -gt 0 ]; then
-        echo "High or Critical vulnerabilities found. Failing the build."
+        echo "##vso[task.logissue type=error]npm audit found $high high and $critical critical vulnerabilities."
+        echo "##vso[task.complete result=Failed;]npm audit failed due to high/critical vulnerabilities."
         exit 1
       else
         echo "No high or critical vulnerabilities found."
@@ -48,7 +49,8 @@ jobs:
       echo "Retire.js vulnerabilities found: $vulns"
 
       if [ "$vulns" -gt 0 ]; then
-        echo "Retire.js found vulnerabilities. Failing the build."
+        echo "##vso[task.logissue type=error]Retire.js discovered one or more vulnerabilities."
+        echo "##vso[task.complete result=Failed;]Retire.js failed due to vulnerabilities."
         exit 1
       else
         echo "No vulnerabilities found by Retire.js."
