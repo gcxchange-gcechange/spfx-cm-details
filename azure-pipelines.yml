@@ -17,6 +17,17 @@ jobs:
   - script: |
       npm audit --audit-level=high --json > npm-audit.json || true
       cat npm-audit.json
+      
+      high=$(jq '[.advisories[] | select(.severity == "high")] | length' npm-audit.json)
+      critical=$(jq '[.advisories[] | select(.severity == "critical")] | length' npm-audit.json)
+      echo "High: $high, Critical: $critical"
+
+      if [ "$high" -gt 0 ] || [ "$critical" -gt 0 ]; then
+        echo "High or Critical vulnerabilities found. Failing the build."
+        exit 1
+      else
+        echo "No high or critical vulnerabilities found."
+      fi
     displayName: 'Run npm audit'
 
   - task: PublishBuildArtifacts@1
@@ -27,7 +38,19 @@ jobs:
 
   - script: |
       npm install -g retire
-      retire --outputformat json --outputpath retire-report.json
+      retire --outputformat json --outputpath retire-report.json || true
+      cat retire-report.json
+
+      # Check if vulnerabilities array is not empty
+      vulns=$(jq '.data | map(.results | length) | add' retire-report.json)
+      echo "Retire.js vulnerabilities found: $vulns"
+
+      if [ "$vulns" -gt 0 ]; then
+        echo "Retire.js found vulnerabilities. Failing the build."
+        exit 1
+      else
+        echo "No vulnerabilities found by Retire.js."
+      fi
     displayName: 'Run Retire.js scan'
 
   - task: PublishBuildArtifacts@1
