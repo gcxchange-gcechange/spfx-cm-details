@@ -18,9 +18,11 @@ jobs:
       npm audit --audit-level=high --json > npm-audit.json || true
       cat npm-audit.json
       
-      high=$(jq '[.advisories[] | select(.severity == "high")] | length' npm-audit.json)
-      critical=$(jq '[.advisories[] | select(.severity == "critical")] | length' npm-audit.json)
-      echo "High: $high, Critical: $critical"
+      high=$(jq '[.vulnerabilities[].via[] | select(type=="object") | select(.severity == "high")] | length' npm-audit.json)
+      critical=$(jq '[.vulnerabilities[].via[] | select(type=="object") | select(.severity == "critical")] | length' npm-audit.json)
+
+      echo "High vulnerabilities: $high"
+      echo "Critical vulnerabilities: $critical"
 
       if [ "$high" -gt 0 ] || [ "$critical" -gt 0 ]; then
         echo "High or Critical vulnerabilities found. Failing the build."
