@@ -81,7 +81,6 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Retire.js report'
-    condition: always()
     inputs:
       PathtoPublish: 'retire-report.json'
       ArtifactName: 'RetireJsReport'
