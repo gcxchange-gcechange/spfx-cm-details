@@ -17,12 +17,33 @@ jobs:
   - script: |
       npm audit --audit-level=high --json > npm-audit.json || true
       cat npm-audit.json
-      
-      high=$(jq '[.vulnerabilities[].via[] | select(type=="object") | select(.severity == "high")] | length' npm-audit.json)
-      critical=$(jq '[.vulnerabilities[].via[] | select(type=="object") | select(.severity == "critical")] | length' npm-audit.json)
 
-      echo "High vulnerabilities: $high"
-      echo "Critical vulnerabilities: $critical"
+      if [ -f ignored-packages.txt ]; then
+        echo "Using ignored-packages.txt..."
+        ignored=$(jq -R . ignored-packages.txt | jq -s .)
+      else
+        echo "ignored-packages.txt not found. Proceeding without ignored packages."
+        ignored='[]'
+      fi
+
+      high=$(jq --argjson ignored "$ignored" '
+        [.vulnerabilities[]
+          | select(.name as $name | ($ignored | index($name) | not))
+          | .via[]
+          | select(type=="object")
+          | select(.severity == "high")
+        ] | length' npm-audit.json)
+
+      critical=$(jq --argjson ignored "$ignored" '
+        [.vulnerabilities[]
+          | select(.name as $name | ($ignored | index($name) | not))
+          | .via[]
+          | select(type=="object")
+          | select(.severity == "critical")
+        ] | length' npm-audit.json)
+
+      echo "High vulnerabilities (excluding ignored packages): $high"
+      echo "Critical vulnerabilities (excluding ignored packages): $critical"
 
       if [ "$high" -gt 0 ] || [ "$critical" -gt 0 ]; then
         echo "##vso[task.logissue type=error]npm audit found $high high and $critical critical vulnerabilities."
