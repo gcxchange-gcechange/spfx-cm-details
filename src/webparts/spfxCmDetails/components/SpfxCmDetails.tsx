@@ -270,12 +270,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         <DefaultButton
                             text={this.strings.contactUs}
                             href={`mailto:support-soutien@gcx-gce.gc.ca?subject=${this.strings.emailSubject}&body=${encodeURIComponent(this.populateEmailTemplate())}`}
-                            aria-labelledby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-describedby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-label={this.strings.contactUs}
                         />
                         <PrimaryButton
                             text={this.strings.cmHomePage}
                             href={this.env.careerMarketplaceHomePage}
-                            aria-labelledby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-describedby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-label={this.strings.cmHomePage}
                         />
                     </div>
                 </div>
@@ -375,7 +377,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 disabled={this.state.Expired} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto: ${this.state.ContactEmail}?subject=Int%C3%A9r%C3%AAt%20envers%20une%20possibilit%C3%A9%20d%E2%80%99emploi&body=Le%20texte%20qui%20suit%20est%20un%20mod%C3%A8le%20de%20courriel.%20Vous%20n%E2%80%99avez%20qu%E2%80%99%C3%A0%20y%20ajouter%20les%20renseignements%20manquants%20(indiqu%C3%A9s%20en%20crochets)%20et%20%C3%A0%20modifier%20le%20texte%20si%20n%C3%A9cessaire.%5D%0A%0ABonjour%20%5Bnom%20sur%20l%E2%80%99offre%20d%E2%80%99emploi%5D%2C%0AJ%E2%80%99esp%C3%A8re%20que%20vous%20allez%20bien.%20Mon%20nom%20est%20%5Bvotre%20nom%5D%20et%20l%E2%80%99offre%20d%E2%80%99emploi%20que%20vous%20avez%20publi%C3%A9e%20dans%20le%20Carrefour%20d%E2%80%99emploi%20sur%20GC%C3%89change%20m%E2%80%99int%C3%A9resse.%20Vous%20trouverez%20ci%20joint%20mon%20curriculum%20vit%C3%A6.%0AMes%20comp%C3%A9tences%20semblent%20correspondre%20%C3%A0%20vos%20besoins%20et%20j%E2%80%99aimerais%20en%20discuter%20avec%20vous.%0AJe%20vous%20remercie%20de%20prendre%20le%20temps%20de%20consid%C3%A9rer%20ma%20candidature.%0ACordialement%2C%0A%5Bvotre%20nom%5D&JobOpportunityId=${this.state.OptId}`}
-                                aria-labelledby='JobTitle' 
+                                aria-describedby='JobTitle' 
+                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
                             />
                         ) : (
                             <PrimaryButton 
@@ -383,7 +386,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 disabled={this.state.Expired} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto: ${this.state.ContactEmail}?subject=Interested%20in%20Career%20Opportunity&body=%5BThe%20following%20is%20an%20email%20template.%20Simply%20fill%20in%20the%20missing%20information%20(indicated%20in%20brackets)%20and%20adjust%20the%20text%20as%20needed.%5D%0A%0AHello%20%5Bname%20on%20post%5D%2C%0AI%20hope%20this%20message%20finds%20you%20well.%20My%20name%20is%20%5Byour%20name%5D%2C%20and%20I%20am%20interested%20in%20the%20career%20opportunity%20you%20posted%20on%20the%20GCXchange%20Career%20Marketplace.%20Please%20find%20my%20resum%C3%A9%20attached%20for%20your%20review.%0AI%20would%20appreciate%20the%20opportunity%20to%20discuss%20how%20my%20skills%20align%20with%20your%20needs.%0AThank%20you%20for%20your%20time%20and%20consideration.%0ABest%20regards%2C%0A%5Byour%20name%5D%0A%0A&JobOpportunityId=${this.state.OptId}`}
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
                             />
                         )}
 
@@ -394,7 +398,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 onClick={() => {
                                     window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
                                 }}
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.strings.Edit} 
                             />
                         ) : (<></>)}   
 
@@ -402,9 +407,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             <PrimaryButton 
                                 onClick={this.toggleModal} 
                                 disabled={this.state.deleteLoading || this.state.deleted} 
-                                className={styles.margin_edit_buttom} text={this.strings.Delete} 
+                                className={styles.margin_edit_buttom} 
+                                text={this.strings.Delete} 
                                 styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.strings.Delete}
                                 />
                         ) : (<></>)}  
 
@@ -422,8 +429,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                         onClick={this.toggleModal} 
                                         iconProps={{iconName: 'ChromeClose'}} 
                                         styles={{icon: {color: 'inherit', backgroundColor: 'transparent', fontSize: 'small'}}}
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
-                                        ariaLabel={this.strings.cancel}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.cancel}
                                     />
                                 </div>
                                 <p 
@@ -434,14 +441,16 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                     <DefaultButton 
                                         text={this.strings.cancel}
                                         onClick={this.toggleModal}
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.cancel}
                                     />
                                     <PrimaryButton 
                                         onClick={this.deleteOpportunity} 
                                         disabled={this.state.deleteLoading || this.state.deleted} 
                                         text={this.strings.Delete} 
                                         styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.Delete}
                                     />
                                 </div>
                             </div>
