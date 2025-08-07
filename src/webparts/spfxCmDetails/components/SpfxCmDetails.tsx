@@ -29,12 +29,14 @@ export interface ISpfxCmDetailsState {
     JobTypeFr: any;
     AppDeadline: string;
     program: any;
+    classification: any;
     Department: any;
     Nmb_opt: string;
     Duration: any;
     DurationQuantity: string;
     Work_Arr: any;
-    Location: any;
+    LocationEn: string;
+    LocationFr: string;
     sec_lvl: any;
     Language: any;
     LanguageComprehension: string;
@@ -47,6 +49,8 @@ export interface ISpfxCmDetailsState {
     deleteLoading: boolean;
     deleted: boolean;
     modalOpen: boolean;
+    skills: any;
+    WorkSchedule: any;
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -83,12 +87,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             JobTypeFr: [],
             AppDeadline: "",
             program: [],
+            classification: "",
             Department: [],
             Nmb_opt: "",
             Duration: [],
             DurationQuantity: "",
             Work_Arr: [],
-            Location: [],
+            LocationEn: "",
+            LocationFr: "",
             sec_lvl: [],
             Language: [],
             LanguageComprehension: "",
@@ -100,7 +106,9 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             pageLoading: true,
             deleteLoading: false,
             deleted: false,
-            modalOpen: false
+            modalOpen: false,
+            skills: [],
+            WorkSchedule: []
         }
 
         if (!this.envValid()) 
@@ -147,9 +155,104 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         const _sp: SPFI = getSP(this.props.context);
 
         try {
-
-            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid).select("Department", "Department/NameEn", "Department/NameFr", "ClassificationCode", "ClassificationCode/NameEn", "ClassificationCode/NameFr", "NumberOfOpportunities", "JobTitleFr", "JobTitleEn", "JobDescriptionEn", "JobDescriptionFr", "ApplicationDeadlineDate", "ContactEmail", "ContactName", "ProgramArea", "JobType", "Duration", "Duration/NameEn", "Duration/NameFr", "DurationQuantity", "WorkArrangement", "WorkArrangement/NameEn", "WorkArrangement/NameFr", "City", "City/NameEn", "City/NameFr", "SecurityClearance", "SecurityClearance/NameEn", "SecurityClearance/NameFr", "LanguageRequirement", "LanguageRequirement/NameEn", "LanguageRequirement/NameFr", "LanguageComprehension").expand("Department", "ClassificationCode", "Duration", "WorkArrangement", "City", "SecurityClearance", "LanguageRequirement")();
+            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
+            .select(
+                "Department", 
+                "Department/NameEn", 
+                "Department/NameFr", 
+                "ClassificationCode", 
+                "ClassificationCode/NameEn", 
+                "ClassificationCode/NameFr", 
+                "ClassificationLevel",
+                "ClassificationLevel/NameEn",
+                "ClassificationLevel/NameFr",
+                "NumberOfOpportunities", 
+                "JobTitleFr", 
+                "JobTitleEn", 
+                "JobDescriptionEn", 
+                "JobDescriptionFr", 
+                "ApplicationDeadlineDate", 
+                "ContactEmail", 
+                "ContactName", 
+                "ProgramArea", 
+                "JobType", 
+                "Duration", 
+                "Duration/NameEn", 
+                "Duration/NameFr", 
+                "DurationQuantity", 
+                "WorkArrangement", 
+                "WorkArrangement/NameEn", 
+                "WorkArrangement/NameFr", 
+                "WorkSchedule",
+                "WorkSchedule/NameEn",
+                "WorkSchedule/NameFr",
+                "City",
+                "City/Id", 
+                "City/NameEn", 
+                "City/NameFr",
+                "SecurityClearance", 
+                "SecurityClearance/NameEn", 
+                "SecurityClearance/NameFr", 
+                "LanguageRequirement", 
+                "LanguageRequirement/NameEn", 
+                "LanguageRequirement/NameFr", 
+                "LanguageComprehension")
+            .expand(
+                "Department", 
+                "ClassificationCode", 
+                "ClassificationLevel",
+                "Duration", 
+                "WorkArrangement",
+                "WorkSchedule",
+                "City",
+                "SecurityClearance", 
+                "LanguageRequirement"
+            )();
             console.log(item);
+
+            const city = await _sp.web.lists.getByTitle("City").items.getById(item.City.Id)
+            .select(
+                "NameEn", 
+                "NameFr", 
+                "Region", 
+                "Region/Id"
+            )
+            .expand(
+                "Region"
+            )();
+
+            const region = await _sp.web.lists.getByTitle("Region").items.getById(city.Region.Id)
+            .select(
+                "NameEn", 
+                "NameFr", 
+                "Province", 
+                "Province/Id",
+                "Province/NameEn",
+                "Province/NameFr"
+            )
+            .expand(
+                "Province"
+            )();
+
+            const querySkills = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
+            .select(
+                "Skills/Id"
+            )
+            .expand(
+                "Skills"
+            )();
+
+            let skillsEn: string[] = [];
+            let skillsFr: string[] = [];
+            if (querySkills && querySkills.Skills && querySkills.Skills.length > 0) {
+                for (let i = 0; i < querySkills.Skills.length; i++) {
+                    let skill = await _sp.web.lists.getByTitle("Skills").items.getById(querySkills.Skills[i].Id)();
+                    
+                    // Because our original list in dev was renamed we have to check for Title/Name...
+                    skillsEn.push(skill.TitleEN ? skill.TitleEN : skill.NameEn);
+                    skillsFr.push(skill.TitleFr ? skill.TitleFr : skill.NameFr);
+                }
+            }
 
             const expired = new Date() >= new Date(item.ApplicationDeadlineDate);
             
@@ -160,20 +263,27 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 DescFr: item.JobDescriptionFr,
                 JobType: await this._get_terms(this.env.jobTypeTermSetId, item.JobType[0].TermGuid),
                 program: await this._get_terms(this.env.programAreaTermSetId, item.ProgramArea[0].TermGuid),
+                classification: `${item.ClassificationCode.NameEn}-${item.ClassificationLevel.NameEn}`,
                 Department: item.Department,
                 AppDeadline: item.ApplicationDeadlineDate.split('T')[0], // convert into format YYYY/MM/DD
                 Nmb_opt: item.NumberOfOpportunities,
                 Duration: item.Duration,
                 DurationQuantity: item.DurationQuantity,
                 Work_Arr:item.WorkArrangement,
-                Location: item.City,
+                LocationEn: `${item.City.NameEn}, ${region.NameEn}, ${region.Province.NameEn}`,
+                LocationFr: `${item.City.NameFr}, ${region.NameFr}, ${region.Province.NameFr}`,
                 sec_lvl: item.SecurityClearance,
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,
                 ContactName: item.ContactName,
                 LanguageComprehension: item.LanguageComprehension,
                 Expired: expired,
-                pageLoading: false
+                pageLoading: false,
+                skills: {
+                    en: skillsEn.join(', '),
+                    fr: skillsFr.join(', ')
+                },
+                WorkSchedule: item.WorkSchedule
             })
         } catch(e) {
             console.error(e);
@@ -337,6 +447,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 {this.state.program}
                             </p>
                             <p>
+                                <h4>{this.strings.classification}</h4>
+                                {this.state.classification}
+                            </p>
+                            <p>
                                 <h4>{this.strings.Department}</h4>
                                 {this.props.prefLang === "fr-fr" ? (this.state.Department.NameFr) : (this.state.Department.NameEn)}
                             </p>
@@ -359,7 +473,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             </p>
                             <p>
                                 <h4>{this.strings.Location}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.Location.NameFr) : (this.state.Location.NameEn)}
+                                {this.props.prefLang === "fr-fr" ? (this.state.LocationFr) : (this.state.LocationEn)}
                             </p>
                             <p>
                                 <h4>{this.strings.SecurityLevel}</h4>
@@ -369,6 +483,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 <h4>{this.strings.LanguageRequirements}</h4>
                                 {this.props.prefLang === "fr-fr" ? (this.state.Language.NameFr) : (this.state.Language.NameEn)}
                                 {' '}{ this.state.LanguageComprehension }
+                            </p>
+                            <p>
+                                <h4>{this.strings.skills}</h4>
+                                {this.props.prefLang === "fr-fr" ? (this.state.skills.fr) : (this.state.skills.en)}
+                            </p>
+                            <p>
+                                <h4>{this.strings.workSchedule}</h4>
+                                {this.props.prefLang === "fr-fr" ? (this.state.WorkSchedule.NameFr) : (this.state.WorkSchedule.NameEn)}
                             </p>
                         </div>
                         {this.props.prefLang === "fr-fr" ? (
@@ -409,7 +531,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 disabled={this.state.deleteLoading || this.state.deleted} 
                                 className={styles.margin_edit_buttom} 
                                 text={this.strings.Delete} 
-                                styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
+                                styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
                                 aria-describedby='JobTitle'
                                 aria-label={this.strings.Delete}
                                 />
@@ -448,7 +570,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                         onClick={this.deleteOpportunity} 
                                         disabled={this.state.deleteLoading || this.state.deleted} 
                                         text={this.strings.Delete} 
-                                        styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
+                                        styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
                                         aria-describedby={`cm-delete-${this.state.OptId}-title`}
                                         aria-label={this.strings.Delete}
                                     />
