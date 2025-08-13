@@ -286,12 +286,14 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         <DefaultButton
                             text={this.strings.contactUs}
                             href={`mailto:support-soutien@gcx-gce.gc.ca?subject=${this.strings.emailSubject}&body=${encodeURIComponent(this.populateRecoveryEmail())}`}
-                            aria-labelledby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-describedby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-label={this.strings.contactUs}
                         />
                         <PrimaryButton
                             text={this.strings.cmHomePage}
                             href={this.env.careerMarketplaceHomePage}
-                            aria-labelledby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-describedby={`cm-deleted-${this.state.OptId}-title`}
+                            aria-label={this.strings.cmHomePage}
                         />
                     </div>
                 </div>
@@ -391,7 +393,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 disabled={this.state.Expired} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
-                                aria-labelledby='JobTitle' 
+                                aria-describedby='JobTitle' 
+                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
                             />
                         ) : (
                             <PrimaryButton 
@@ -399,7 +402,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 disabled={this.state.Expired} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
                             />
                         )}
 
@@ -410,7 +414,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                 onClick={() => {
                                     window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
                                 }}
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.strings.Edit} 
                             />
                         ) : (<></>)}   
 
@@ -418,9 +423,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             <PrimaryButton 
                                 onClick={this.toggleModal} 
                                 disabled={this.state.deleteLoading || this.state.deleted} 
-                                className={styles.margin_edit_buttom} text={this.strings.Delete} 
+                                className={styles.margin_edit_buttom} 
+                                text={this.strings.Delete} 
                                 styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
-                                aria-labelledby='JobTitle'
+                                aria-describedby='JobTitle'
+                                aria-label={this.strings.Delete}
                                 />
                         ) : (<></>)}  
 
@@ -438,8 +445,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                         onClick={this.toggleModal} 
                                         iconProps={{iconName: 'ChromeClose'}} 
                                         styles={{icon: {color: 'inherit', backgroundColor: 'transparent', fontSize: 'small'}}}
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
-                                        ariaLabel={this.strings.cancel}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.cancel}
                                     />
                                 </div>
                                 <p 
@@ -450,14 +457,16 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                                     <DefaultButton 
                                         text={this.strings.cancel}
                                         onClick={this.toggleModal}
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.cancel}
                                     />
                                     <PrimaryButton 
                                         onClick={this.deleteOpportunity} 
                                         disabled={this.state.deleteLoading || this.state.deleted} 
                                         text={this.strings.Delete} 
                                         styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', color: '#FFF' } }} 
-                                        aria-labelledby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                        aria-label={this.strings.Delete}
                                     />
                                 </div>
                             </div>
