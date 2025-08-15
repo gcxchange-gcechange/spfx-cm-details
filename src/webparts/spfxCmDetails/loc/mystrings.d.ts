@@ -37,6 +37,9 @@ declare interface ISpfxCmDetailsWebPartStrings {
     dialogText: string;
     cancel: string;
     emailSubject: string;
+    classification: string;
+    workSchedule: string;
+    skills: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {
