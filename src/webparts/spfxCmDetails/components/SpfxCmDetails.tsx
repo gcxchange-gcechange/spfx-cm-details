@@ -355,8 +355,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         "Bonjour,\n\nVeuillez récupérer la possibilité d’emploi supprimée dans le Carrefour de carrière, intitulée {jobTitle}, que j’ai supprimée le {date}.\n\nMerci,\n\n{name}" :
         "Hello,\n\nPlease recover the deleted Career Marketplace opportunity titled {jobTitle}, which I deleted on {date}.\n\nThank you,\n\n{name}";
         const today = new Date();
-        const nameSplit = this.props.userDisplayName.split(',');
-        const name = nameSplit.length > 1 ? `${nameSplit[1]} ${nameSplit[0]}` : this.state.ContactName;
+        const nameSplit: string[] = this.props.userDisplayName.split(',');
+        const name = nameSplit.length > 1 ? `${nameSplit[1].trim()} ${nameSplit[0].trim()}` : this.state.ContactName;
 
         return template
             .replace('{jobTitle}', this.props.prefLang === 'fr-fr' ? this.state.TitleFr : this.state.TitleEn)
@@ -369,11 +369,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         `Bonjour {contactName},\n\nJ’espère que vous allez bien. Mon nom est {userName} et l’offre d’emploi que vous avez publiée dans le Carrefour d’emploi sur GCÉchange m’intéresse. Vous trouverez ci joint mon curriculum vitæ.\n\nMes compétences semblent correspondre à vos besoins et j’aimerais en discuter avec vous.\nJe vous remercie de prendre le temps de considérer ma candidature.\n\nCordialement,\n{userName}` :
         `Hello {contactName},\n\nI hope this message finds you well. My name is {userName}, and I am interested in the career opportunity you posted on the GCXchange Career Marketplace. Please find my resumé attached for your review.\n\nI would appreciate the opportunity to discuss how my skills align with your needs.\nThank you for your time and consideration.\n\nBest regards,\n{userName}`;
         
-        const conNameSplit = this.state.ContactName.split(',');
-        const contactName = conNameSplit.length > 1 ? `${conNameSplit[1]} ${conNameSplit[0]}` : this.state.ContactName;
+        const conNameSplit: string[] = this.state.ContactName.split(',');
+        const contactName = conNameSplit.length > 1 ? `${conNameSplit[1].trim()} ${conNameSplit[0].trim()}` : this.state.ContactName;
 
-        const usrNameSplit = this.props.userDisplayName.split(',');
-        const userName = usrNameSplit.length > 1 ? `${usrNameSplit[1]} ${usrNameSplit[0]}` : this.props.userDisplayName;
+        const usrNameSplit: string[] = this.props.userDisplayName.split(',');
+        const userName = usrNameSplit.length > 1 ? `${usrNameSplit[1].trim()} ${usrNameSplit[0].trim()}` : this.props.userDisplayName;
 
         return template
             .replace(/{userName}/g, userName)
