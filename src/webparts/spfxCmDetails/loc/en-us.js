@@ -31,7 +31,7 @@ define([], function() {
       "oppDeletedTitle": "The opportunity has been deleted",
       "oppDeletedSubText": "<b>{jobTitle}</b> has been deleted. You have 30 days to contact our Support team to recover the opportunity if you change your mind. Please provide our Support team with the <b>post title</b> and <b>date that the post was deleted</b> when requesting recovery.</br></br><b>After 30 days, the opportunity will be permanently deleted.</b>",
       "contactUs": "Contact us",
-      "cmHomePage": "Career marketplace homepage",
+      "cmHomePage": "Career Marketplace homepage",
       "loading": "Loading...",
       "dialogTitle": "Delete opportunity",
       "dialogText": "<b>Are you sure you want to delete this opportunity?</b> Once deleted, you will have 30 days to contact our support team to recover the opportunity if you change your mind. After 30 days, the opportunity will be permanently deleted.",
