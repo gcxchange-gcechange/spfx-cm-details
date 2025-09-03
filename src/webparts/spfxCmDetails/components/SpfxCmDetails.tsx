@@ -246,11 +246,13 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             const skillsFr: string[] = [];
             if (querySkills && querySkills.Skills && querySkills.Skills.length > 0) {
                 for (let i = 0; i < querySkills.Skills.length; i++) {
-                    let skill = await _sp.web.lists.getByTitle("Skills").items.getById(querySkills.Skills[i].Id)();
+                    const skill = await _sp.web.lists.getByTitle("Skills").items.getById(querySkills.Skills[i].Id)();
                     
-                    // Because our original list in dev was renamed we have to check for Title/Name...
-                    skillsEn.push(skill.TitleEN ? skill.TitleEN : skill.NameEn);
-                    skillsFr.push(skill.TitleFr ? skill.TitleFr : skill.NameFr);
+                    if (skill) {
+                        // Because our original list in dev was renamed we have to check for Title/Name...
+                        skillsEn.push(skill.TitleEN ? skill.TitleEN : skill.NameEn);
+                        skillsFr.push(skill.TitleFr ? skill.TitleFr : skill.NameFr);
+                    }
                 }
             }
 
