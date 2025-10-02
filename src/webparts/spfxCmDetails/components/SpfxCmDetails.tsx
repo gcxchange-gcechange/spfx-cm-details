@@ -368,7 +368,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
     private populateApplicationEmail = (): string => {
         const template = this.props.prefLang === 'fr-fr' ?
-        `Bonjour {contactName},\n\nJ’espère que vous allez bien. Mon nom est {userName} et l’offre d’emploi que vous avez publiée dans le Carrefour d’emploi sur GCÉchange m’intéresse. Vous trouverez ci joint mon curriculum vitæ.\n\nMes compétences semblent correspondre à vos besoins et j’aimerais en discuter avec vous.\nJe vous remercie de prendre le temps de considérer ma candidature.\n\nCordialement,\n{userName}` :
+        `Bonjour {contactName},\n\nJ’espère que vous allez bien. Mon nom est {userName} et l’offre d’emploi que vous avez publiée dans le marché de carrière sur GCÉchange m’intéresse. Vous trouverez ci joint mon curriculum vitæ.\n\nMes compétences semblent correspondre à vos besoins et j’aimerais en discuter avec vous.\nJe vous remercie de prendre le temps de considérer ma candidature.\n\nCordialement,\n{userName}` :
         `Hello {contactName},\n\nI hope this message finds you well. My name is {userName}, and I am interested in the career opportunity you posted on the GCXchange Career Marketplace. Please find my resumé attached for your review.\n\nI would appreciate the opportunity to discuss how my skills align with your needs.\nThank you for your time and consideration.\n\nBest regards,\n{userName}`;
         
         const conNameSplit: string[] = this.state.ContactName.split(',');
