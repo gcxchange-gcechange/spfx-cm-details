@@ -13,7 +13,6 @@ import { TermStore } from '@microsoft/microsoft-graph-types';
 import { SelectLanguage } from "./SelectLanguage";
 import { PrimaryButton, DefaultButton, IconButton, Icon, Modal } from '@fluentui/react';
 import * as strings from 'SpfxCmDetailsWebPartStrings';
-import parse from 'html-react-parser';
 import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
 
 // @ts-expect-error need this for some reason, * won't work.
@@ -135,19 +134,23 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             }
         }
 
-        console.log("_geturlID val", val);
-
         if (val !== null && val) { // check if value exist and not empty
             this.setState({
                 NoOpt: false,
                 OptId: val
-            })
+            });
+
+            // Insert the JobOpportunityId back into the URL
+            const url = new URL(window.location.href);
+            url.searchParams.append("JobOpportunityId", val.toString());
+            history.replaceState(null, "", url.toString());
+
             await this._getdetailsopt(val);
         } else {
             this.setState({
                 NoOpt: true,
                 pageLoading: false
-            })
+            });
         }
     }
     
@@ -433,13 +436,13 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </div>
                 ) : null}
 
-                <div className={styles.retention}>
+                {/* <div className={styles.retention}>
                     <p>
                         <span id="retention">
                             {parse(this.strings.Retention)}
                         </span>
                     </p>
-                </div>
+                </div> */}
 
                 <div className={styles.welcome}>
                     <h2>
@@ -514,7 +517,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         {this.props.prefLang === "fr-fr" ? (
                             <PrimaryButton 
                                 text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired} 
+                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                                 aria-describedby='JobTitle' 
@@ -523,7 +526,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         ) : (
                             <PrimaryButton 
                                 text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired} 
+                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                                 aria-describedby='JobTitle'

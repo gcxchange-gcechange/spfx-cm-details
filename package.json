@@ -22,7 +22,6 @@
     "@pnp/graph": "^4.16.0",
     "@pnp/logging": "^4.16.0",
     "@pnp/sp": "^4.16.0",
-    "html-react-parser": "^5.2.5",
     "dompurify": "^3.2.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
