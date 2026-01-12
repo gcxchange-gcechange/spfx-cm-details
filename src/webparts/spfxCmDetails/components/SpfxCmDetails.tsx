@@ -135,19 +135,23 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             }
         }
 
-        console.log("_geturlID val", val);
-
         if (val !== null && val) { // check if value exist and not empty
             this.setState({
                 NoOpt: false,
                 OptId: val
-            })
+            });
+
+            // Insert the JobOpportunityId back into the URL
+            const url = new URL(window.location.href);
+            url.searchParams.append("JobOpportunityId", val.toString());
+            history.replaceState(null, "", url.toString());
+
             await this._getdetailsopt(val);
         } else {
             this.setState({
                 NoOpt: true,
                 pageLoading: false
-            })
+            });
         }
     }
     
