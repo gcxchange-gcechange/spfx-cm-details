@@ -433,13 +433,13 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </div>
                 ) : null}
 
-                <div className={styles.retention}>
+                {/* <div className={styles.retention}>
                     <p>
                         <span id="retention">
                             {parse(this.strings.Retention)}
                         </span>
                     </p>
-                </div>
+                </div> */}
 
                 <div className={styles.welcome}>
                     <h2>
