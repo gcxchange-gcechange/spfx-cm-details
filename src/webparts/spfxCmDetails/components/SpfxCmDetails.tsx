@@ -13,7 +13,6 @@ import { TermStore } from '@microsoft/microsoft-graph-types';
 import { SelectLanguage } from "./SelectLanguage";
 import { PrimaryButton, DefaultButton, IconButton, Icon, Modal } from '@fluentui/react';
 import * as strings from 'SpfxCmDetailsWebPartStrings';
-import parse from 'html-react-parser';
 import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
 
 // @ts-expect-error need this for some reason, * won't work.
