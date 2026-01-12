@@ -514,7 +514,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         {this.props.prefLang === "fr-fr" ? (
                             <PrimaryButton 
                                 text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired} 
+                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                                 aria-describedby='JobTitle' 
@@ -523,7 +523,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         ) : (
                             <PrimaryButton 
                                 text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired} 
+                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                                 styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
                                 href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                                 aria-describedby='JobTitle'
