@@ -142,8 +142,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
             // Insert the JobOpportunityId back into the URL
             const url = new URL(window.location.href);
-            url.searchParams.append("JobOpportunityId", val.toString());
-            history.replaceState(null, "", url.toString());
+            if (url.href.indexOf(`JobOpportunityId=${val}`) === -1) {
+                url.searchParams.append("JobOpportunityId", val.toString());
+                history.replaceState(null, "", url.toString());
+            }
 
             await this._getdetailsopt(val);
         } else {
