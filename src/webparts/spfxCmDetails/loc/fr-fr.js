@@ -41,6 +41,8 @@ define([], function () {
         "emailSubject": "Demande de récupération d’une possibilité d’emploi supprimée dans le marché de carrière",
         "classification": "Classification",
         "workSchedule": "Horaire de travail",
-        "skills": "Compétences"
+        "skills": "Compétences",
+        "noOpportunitiy": "Désolé ! Cette opportunité n'est pas disponible.",
+        "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support."
     }
 });

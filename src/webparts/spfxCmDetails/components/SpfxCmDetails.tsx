@@ -268,16 +268,19 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             let programAreaTermGuid;
 
             if (Array.isArray(item.JobType)) {
-                jobTypeTermGuid = item.JobType[0].TermGuid;
+                jobTypeTermGuid = item.JobType.length > 0 ? item.JobType[0].TermGuid : null;
             } else {
                 jobTypeTermGuid = item.JobType.TermGuid;
             }
 
             if (Array.isArray(item[this.env.programAreaColumnName])) {
-                programAreaTermGuid = item[this.env.programAreaColumnName][0].TermGuid;
+                programAreaTermGuid = item[this.env.programAreaColumnName].length > 0 ? item[this.env.programAreaColumnName][0].TermGuid : null;
             } else {
                 programAreaTermGuid = item[this.env.programAreaColumnName].TermGuid;
             }
+            
+            console.log("jobTypeTermGuid", jobTypeTermGuid);
+            console.log("programAreaTermGuid", programAreaTermGuid);
 
             this.setState({
                 TitleFr: item.JobTitleFr,
@@ -318,18 +321,18 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     }
 
     public _get_terms = async (termsetid: string, termsid: string): Promise<void> => {
+        if (termsid !== null) {
+            let lang_id;
+            if (this.props.prefLang === "fr-fr")
+                lang_id = 1
+            else
+                lang_id = 0;
 
-        const graph = graphfi().using(SPFx(this.props.context));
+            const graph = graphfi().using(SPFx(this.props.context));
+            const info: TermStore.Term = await graph.termStore.groups.getById(this.env.careerMarketplaceTermSetId).sets.getById(termsetid).getTermById(termsid)();
 
-        let lang_id = 0;
-        if (this.props.prefLang === "fr-fr") {
-            lang_id = 1;
-        } else {
-            lang_id = 0;
+            return JSON.parse(JSON.stringify(info.labels))[lang_id].name;
         }
-
-        const info: TermStore.Term = await graph.termStore.groups.getById(this.env.careerMarketplaceTermSetId).sets.getById(termsetid).getTermById(termsid)();
-        return JSON.parse(JSON.stringify(info.labels))[lang_id].name;
     }
 
     private toggleModal = (): void => {
@@ -440,8 +443,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 {this.state.NoOpt ? (
 
                     <div className={styles.welcome}>
-                        <h2>Sorry! This opportunity do not exist+{this.state.NoOpt}</h2>
-                        <p>Please, try another one or reach out to our support team!</p>
+                        <h2>{this.strings.noOpportunitiy}</h2>
+                        <p>{this.strings.contactSupport}</p>
                     </div>
 
                 ) : ( 
