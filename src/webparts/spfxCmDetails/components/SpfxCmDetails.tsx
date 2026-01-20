@@ -61,19 +61,12 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     private env = {
         careerMarketplaceTermSetId: '656c725c-def6-46cd-86df-b51f1b22383e',
         jobTypeTermSetId: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e',
-        
         programAreaTermSetId: 'bd807536-d8e7-456b-aab0-fae3eecedd8a',
         programAreaColumnName: 'Program_Area',
-        
         authClientId: 'c121f403-ff41-4db3-8426-f3b9c5016cd4',
         deleteApiUrl: 'https://appsvc-function-dev-cm-listmgmt-dotnet001.azurewebsites.net/api/DeleteJobOpportunity?',
         careerMarketplaceHomePage: 'https://devgcx.sharepoint.com/sites/CM-test',
         editOpportunityPage: 'https://devgcx.sharepoint.com/sites/CM-test/SitePages/editOpportunity.aspx?JobOpportunityId='
-
-
-
-
-
     }
 
     private envValid(): boolean {
