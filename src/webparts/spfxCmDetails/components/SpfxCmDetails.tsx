@@ -279,8 +279,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 programAreaTermGuid = item[this.env.programAreaColumnName].TermGuid;
             }
             
-            console.log("jobTypeTermGuid", jobTypeTermGuid);
-            console.log("programAreaTermGuid", programAreaTermGuid);
+            // console.log("jobTypeTermGuid", jobTypeTermGuid);
+            // console.log("programAreaTermGuid", programAreaTermGuid);
 
             this.setState({
                 TitleFr: item.JobTitleFr,
@@ -471,7 +471,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </h2>
                 </div>
                 <div>
-                    <p className={styles.desc_bold}>
+                    <p className={styles.desc_bold}
+                       style={{whiteSpace: 'pre-line'}} >
                         {this.props.prefLang === "fr-fr" ? (
                             this.state.DescFr
                         ) : (
