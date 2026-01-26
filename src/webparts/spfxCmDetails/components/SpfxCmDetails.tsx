@@ -471,8 +471,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </h2>
                 </div>
                 <div>
-                    <p className={styles.desc_bold}
-                       style={{whiteSpace: 'pre-line'}} >
+                    <p style={{whiteSpace: 'pre-line'}} >
                         {this.props.prefLang === "fr-fr" ? (
                             this.state.DescFr
                         ) : (
