@@ -24,7 +24,7 @@ define([], function () {
         "Location": "Lieu",
         "SecurityLevel": "Niveau de sécurité",
         "LanguageRequirements": "Exigences linguistiques",
-        "Apply": "Postuler",
+        "Apply": "Postuler par courriel",
         "Edit": "Modifier",
         "Expired": "Possibilité expirée. Les candidatures sont maintenant fermées.",
         "ApplicationsClosed": "Candidatures fermées",
