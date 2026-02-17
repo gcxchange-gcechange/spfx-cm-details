@@ -436,7 +436,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         } = this.props;
 
         return this.state.deleted ? (
-            <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
+            <section className={`${styles.detailsbase} ${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 <div className={styles.deletedSection}>
                     <h2 id={`cm-deleted-${this.state.OptId}-title`}>
                         {this.strings.oppDeletedTitle}
@@ -459,11 +459,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 </div>
             </section>) : 
             this.state.pageLoading ? (
-            <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
+            <section className={`${styles.detailsbase} ${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 <h2>{this.strings.loading}</h2>
             </section>) :
             (
-            <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
+            <section className={`${styles.detailsbase} ${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 {this.state.NoOpt ? (
                     <div>
                         <h2>{this.strings.noOpportunitiy}</h2>
@@ -479,7 +479,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </div>
                 ) : null}
 
-                <div>
+                <div className={styles.detailsbase}>
                     <h1>
                         <span>{this.props.prefLang === "fr-fr" ? (this.state.TitleFr) : (this.state.TitleEn)}</span>
                     </h1>
