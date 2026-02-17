@@ -79,23 +79,29 @@ h1, h2 {
 .details {
   div {
     padding-bottom: 10px;
+    margin-left: -2px;
+
+    dt, dd {
+      display: inline-table;
+    }
+
+    dt {
+      font-weight: 600;
+    }
+    
+    dd {
+      margin-left: 5px;
+    }
+
+    i {
+      width: 25px;
+      display: inline-table;
+      text-align: center;
+    }
   }
 
   div:last-child {
     padding-bottom: 0;
-  }
-
-  div i {
-    padding-right: 10px;
-  }
-
-  div:nth-child(2) i {
-    padding-right: 12px;
-  }
-
-  div:first-child i,
-  div:last-child i {
-    padding-right: 5px;
   }
 }
 
