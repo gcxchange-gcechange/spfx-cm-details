@@ -465,12 +465,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             (
             <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 {this.state.NoOpt ? (
-
                     <div>
                         <h2>{this.strings.noOpportunitiy}</h2>
                         <p>{this.strings.contactSupport}</p>
                     </div>
-
                 ) : ( 
             <>
                 {this.state.Expired ? (
@@ -483,65 +481,70 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
                 <div>
                     <h1>
-                        <span id="JobTitle">{this.props.prefLang === "fr-fr" ? (this.state.TitleFr) : (this.state.TitleEn)}</span>
+                        <span>{this.props.prefLang === "fr-fr" ? (this.state.TitleFr) : (this.state.TitleEn)}</span>
                     </h1>
 
                     <div className={styles.subDate}>
-                        <span>{this.strings.posted}: {this.formatDate(this.state.Created)}</span>
+                        <time>{this.strings.posted}: {this.formatDate(this.state.Created)}</time>
                         <span>·</span>
-                        <span>{this.strings.ApplicationDeadline}: {this.formatDate(this.state.AppDeadline)}</span>
+                        <time>{this.strings.ApplicationDeadline}: {this.formatDate(this.state.AppDeadline)}</time>
                     </div>
 
-                    <div className={styles.tagSection}>
-                        <div className={styles.tag}>
+                    <ul className={styles.tagSection} style={{paddingTop: '20px'}}>
+                        <li className={styles.tag} aria-label={this.strings.JobType + ': ' + this.state.JobType}>
                             <span>{this.state.JobType}</span>
-                        </div>
-                        <div className={styles.tag}>
+                        </li>
+                        <li className={styles.tag} aria-label={this.strings.classification + ': ' + this.state.classification}>
                             <span>{this.state.classification}</span>
-                        </div>
-                        <div className={styles.tag}>
-                            <span>{this.props.prefLang === "fr-fr" ? (this.state.Department.NameFr) : (this.state.Department.NameEn)}</span>
-                        </div>
-                        <div className={styles.tag}>
-                            <span>{this.props.prefLang === "fr-fr" ? (this.state.Language.NameFr) : (this.state.Language.NameEn)}{' '}{ this.state.LanguageComprehension }</span>
-                        </div>
-                    </div>
+                        </li>
+                        <li className={styles.tag} aria-label={this.strings.Department + ': ' + (this.props.prefLang === "fr-fr" ? this.state.Department.NameFr : this.state.Department.NameEn)}>
+                            <span>{this.props.prefLang === "fr-fr" ? this.state.Department.NameFr : this.state.Department.NameEn}</span>
+                        </li>
+                        <li className={styles.tag} aria-label={this.strings.LanguageRequirements + ': ' + (this.props.prefLang === "fr-fr" ? this.state.Language.NameFr : this.state.Language.NameEn) + (this.state.LanguageComprehension ? this.state.LanguageComprehension : '')}>
+                            <span>{this.props.prefLang === "fr-fr" ? this.state.Language.NameFr : this.state.Language.NameEn}{' '}{ this.state.LanguageComprehension }</span>
+                        </li>
+                    </ul>
                     
                     <h2>{this.strings.aboutThisOpt}</h2>
-                    <div className={styles.description}>
-                        {this.props.prefLang === "fr-fr" ? (this.state.DescFr) : (this.state.DescEn)}
-                    </div>
+                    <div className={styles.description} 
+                        dangerouslySetInnerHTML={{__html: this.props.prefLang === "fr-fr" ? (this.state.DescFr) : (this.state.DescEn)}} 
+                    />
 
                     <h2>{this.strings.moreDetails}</h2>
                     <div className={styles.details}>
                         <div>
+                            <i className="fa-regular fa-star" aria-hidden="true"/>
                             <b>{this.strings.WorkArrangement}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.Work_Arr.NameFr) : (this.state.Work_Arr.NameEn)}</span>
                         </div>
                         <div>
+                            <i className="fa-solid fa-location-dot" aria-hidden="true"/>
                             <b>{this.strings.Location}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.LocationFr) : (this.state.LocationEn)}</span>
                         </div>
                         <div>
+                            <i className="fa-regular fa-calendar-days" aria-hidden="true"/>
                             <b>{this.strings.workSchedule}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.WorkSchedule.NameFr) : (this.state.WorkSchedule.NameEn)}</span>
                         </div>
                         <div>
+                            <i className="fa-solid fa-shield" aria-hidden="true"/>
                             <b>{this.strings.SecurityLevel}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.sec_lvl.NameFr) : (this.state.sec_lvl.NameEn)}</span>
                         </div>
                         <div>
+                            <i className="fa-regular fa-star" aria-hidden="true"/>
                             <b>{this.strings.NumberOpportunities}:</b> <span>{this.state.Nmb_opt}</span>
                         </div>
                     </div>
 
-                    <h2>{this.strings.skills}</h2>
-                    <div className={styles.tagSection}style={{paddingTop: 0}}>
+                    <h2 id="gcx-job-skills">{this.strings.skills}</h2>
+                    <ul className={styles.tagSection}>
                         {(this.props.prefLang === "fr-fr" ? this.state.SkillsFr : this.state.SkillsEn)
                             .map((name, index) => (
-                                <div key={index} className={styles.tag} style={{backgroundColor: '#DAE8E8'}}>
+                                <li key={index} className={styles.tag} style={{backgroundColor: '#DAE8E8'}}>
                                     <span style={{fontWeight: '400', fontSize: '14px'}}>
                                         {name}
                                     </span>
-                                </div>
+                                </li>
                         ))}
-                    </div>
+                    </ul>
                 </div>
 
                 <div className={styles.buttonSection}>

@@ -13,7 +13,7 @@ define([], function () {
         "AppOfficeEnvironment": "The app is running in office.com",
         "AppOutlookEnvironment": "The app is running in Outlook",
         "UnknownEnvironment": "The app is running in an unknown environment",
-        "ApplicationDeadline": "Date limite de candidature",
+        "ApplicationDeadline": "Date limite de la candidature",
         "JobType": "Type d'emploi",
         "OpportunityDetails": "Détails de la possibilité d’emploi",
         "ProgramArea": "Secteur de programme",

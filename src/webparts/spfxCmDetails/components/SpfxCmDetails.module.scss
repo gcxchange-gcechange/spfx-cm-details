@@ -6,7 +6,7 @@
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
-    font-family: $ms-font-family-fallbacks;
+    font-family: 'Inter', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
   }
 }
 
@@ -24,8 +24,18 @@
   }
 }
 
+h1 {
+  margin-top: 0;
+  font-weight: 600;
+}
+
+h2 {
+  font-weight: 600;
+}
+
 .subDate {
-  span {
+  span,
+  time {
     font-weight: 400;
     font-size: 14px;
     color: #595854;
@@ -36,7 +46,8 @@
 }
 
 .tagSection{
-  padding-top: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .tag {
@@ -65,33 +76,23 @@
   div:last-child {
     padding-bottom: 0;
   }
+
+  div i {
+    padding-right: 10px;
+  }
+
+  div:nth-child(2) i {
+    padding-right: 12px;
+  }
+
+  div:first-child i,
+  div:last-child i {
+    padding-right: 5px;
+  }
 }
 
 .buttonSection {
-  padding-top:10px;
-}
-
-
-
-
-
-
-
-
-
-
-
-.jobtype_space{
-    padding-right:10%;
-}
-
-.desc_bold{
-    font-weight:600;
-}
-
-.deadline_type_section {
-    padding-bottom: 5%;
-    display:block;
+  padding-top: 20px;
 }
 
 .margin_edit_buttom {
@@ -175,8 +176,4 @@
     margin: 0 30px 20px;
     justify-content: space-between;
   }
-}
-
-.retention {
-  padding-bottom: 5%;
 }

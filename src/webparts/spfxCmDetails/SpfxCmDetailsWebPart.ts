@@ -43,9 +43,28 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
 
     protected async onInit(): Promise<void> {
 
-        await super.onInit();
+      const linkId = "fontawesome-cdn";
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement("link");
+        link.id = linkId;
+        link.rel = "stylesheet";
+        link.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css";
+        document.head.appendChild(link);
+      }
 
-        getSP(this.context);
+      const fontId = "inter-font";
+      if (!document.getElementById(fontId)) {
+        const link = document.createElement("link");
+        link.id = fontId;
+        link.rel = "stylesheet";
+        link.href =
+          "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
+        document.head.appendChild(link);
+      }
+
+      await super.onInit();
+
+      getSP(this.context);
     }
 
 
@@ -68,6 +87,11 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
   }
 
   protected onDispose(): void {
+    const link = document.getElementById("fontawesome-cdn");
+    if (link && link.parentNode) {
+      link.parentNode.removeChild(link);
+    }
+
     ReactDom.unmountComponentAtNode(this.domElement);
   }
 
@@ -91,7 +115,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                       options: [
                           { key: 'account', text: 'Account' },
                           { key: 'en-us', text: 'English' },
-                          { key: 'fr-fr', text: 'Français' }
+                          { key: 'fr-fr', text: 'FranÃ§ais' }
                       ]
                   }),
               ]
