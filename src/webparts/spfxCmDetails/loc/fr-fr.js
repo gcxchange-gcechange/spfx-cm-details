@@ -43,6 +43,9 @@ define([], function () {
         "workSchedule": "Horaire de travail",
         "skills": "Compétences",
         "noOpportunitiy": "Désolé ! Cette opportunité n'est pas disponible.",
-        "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support."
+        "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support.",
+        "posted": "Publié",
+        "aboutThisOpt": "À propos de cette opportunité",
+        "moreDetails": "Plus de détails"
     }
 });

@@ -12,7 +12,7 @@ import { TermStore } from '@microsoft/microsoft-graph-types';
 //import { ITermSet } from "@pnp/graph/taxonomy";
 import { SelectLanguage } from "./SelectLanguage";
 import { PrimaryButton, DefaultButton, IconButton, Icon, Modal } from '@fluentui/react';
-import * as strings from 'SpfxCmDetailsWebPartStrings';
+//import * as strings from 'SpfxCmDetailsWebPartStrings';
 import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
 
 // @ts-expect-error need this for some reason, * won't work.
@@ -41,6 +41,7 @@ export interface ISpfxCmDetailsState {
     LanguageComprehension: string;
     NoOpt: boolean;
     ContactEmail: string;
+    ApplyEmail: string;
     ContactName: string;
     OptId: number;
     Expired: boolean;
@@ -50,6 +51,9 @@ export interface ISpfxCmDetailsState {
     modalOpen: boolean;
     skills: any;
     WorkSchedule: any;
+    Created: string;
+    SkillsEn: string[];
+    SkillsFr: string[];
 }
 export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, ISpfxCmDetailsState> {
 
@@ -100,6 +104,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             LanguageComprehension: "",
             NoOpt: true,
             ContactEmail: "",
+            ApplyEmail: "",
             ContactName: "",
             OptId: 0,
             Expired: false,
@@ -108,7 +113,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             deleted: false,
             modalOpen: false,
             skills: [],
-            WorkSchedule: []
+            WorkSchedule: [],
+            Created: "",
+            SkillsEn: [],
+            SkillsFr: []
         }
 
         if (!this.envValid()) 
@@ -163,6 +171,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         try {
             const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
             .select(
+                "Created",
                 "Department", 
                 "Department/NameEn", 
                 "Department/NameFr", 
@@ -179,6 +188,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 "JobDescriptionFr", 
                 "ApplicationDeadlineDate", 
                 "ContactEmail", 
+                "ApplyEmail", 
                 "ContactName", 
                 this.env.programAreaColumnName, 
                 "JobType", 
@@ -301,6 +311,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 sec_lvl: item.SecurityClearance,
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,
+                ApplyEmail: item.ApplyEmail,
                 ContactName: item.ContactName,
                 LanguageComprehension: item.LanguageComprehension,
                 Expired: expired,
@@ -309,7 +320,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     en: skillsEn.join(', '),
                     fr: skillsFr.join(', ')
                 },
-                WorkSchedule: item.WorkSchedule
+                SkillsEn: skillsEn,
+                SkillsFr: skillsFr,
+                WorkSchedule: item.WorkSchedule,
+                Created: item.Created 
             })
         } catch(e) {
             console.error(e);
@@ -405,6 +419,16 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             .replace(/{userName}/g, userName)
             .replace('{contactName}', contactName);
     }
+
+    private formatDate = (dateString: string): string => {
+        const date = new Date(dateString);
+
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+        return year + "-" + month + "-" + day;
+    }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
         const {
@@ -442,7 +466,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             <section className={`${styles.spfxCmDetails} ${hasTeamsContext ? styles.teams : ''}`}>
                 {this.state.NoOpt ? (
 
-                    <div className={styles.welcome}>
+                    <div>
                         <h2>{this.strings.noOpportunitiy}</h2>
                         <p>{this.strings.contactSupport}</p>
                     </div>
@@ -457,168 +481,151 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     </div>
                 ) : null}
 
-                {/* <div className={styles.retention}>
-                    <p>
-                        <span id="retention">
-                            {parse(this.strings.Retention)}
-                        </span>
-                    </p>
-                </div> */}
-
-                <div className={styles.welcome}>
-                    <h2>
-                        <span id="JobTitle">{this.props.prefLang === "fr-fr" ? (this.state.TitleFr) : (this.state.TitleEn)}</span>
-                    </h2>
-                </div>
                 <div>
-                    <p style={{whiteSpace: 'pre-line'}} >
-                        {this.props.prefLang === "fr-fr" ? (
-                            this.state.DescFr
-                        ) : (
-                            this.state.DescEn
-                        )}
-                    </p>
-                        <div className={styles.deadline_type_section}>
-                            <span className={styles.jobtype_space}>{this.strings.JobType} ({this.state.JobType})</span>
-                            <span>{this.strings.ApplicationDeadline}: {this.state.AppDeadline}</span>
+                    <h1>
+                        <span id="JobTitle">{this.props.prefLang === "fr-fr" ? (this.state.TitleFr) : (this.state.TitleEn)}</span>
+                    </h1>
+
+                    <div className={styles.subDate}>
+                        <span>{this.strings.posted}: {this.formatDate(this.state.Created)}</span>
+                        <span>·</span>
+                        <span>{this.strings.ApplicationDeadline}: {this.formatDate(this.state.AppDeadline)}</span>
+                    </div>
+
+                    <div className={styles.tagSection}>
+                        <div className={styles.tag}>
+                            <span>{this.state.JobType}</span>
+                        </div>
+                        <div className={styles.tag}>
+                            <span>{this.state.classification}</span>
+                        </div>
+                        <div className={styles.tag}>
+                            <span>{this.props.prefLang === "fr-fr" ? (this.state.Department.NameFr) : (this.state.Department.NameEn)}</span>
+                        </div>
+                        <div className={styles.tag}>
+                            <span>{this.props.prefLang === "fr-fr" ? (this.state.Language.NameFr) : (this.state.Language.NameEn)}{' '}{ this.state.LanguageComprehension }</span>
+                        </div>
+                    </div>
+                    
+                    <h2>{this.strings.aboutThisOpt}</h2>
+                    <div className={styles.description}>
+                        {this.props.prefLang === "fr-fr" ? (this.state.DescFr) : (this.state.DescEn)}
+                    </div>
+
+                    <h2>{this.strings.moreDetails}</h2>
+                    <div className={styles.details}>
+                        <div>
+                            <b>{this.strings.WorkArrangement}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.Work_Arr.NameFr) : (this.state.Work_Arr.NameEn)}</span>
                         </div>
                         <div>
-                            <h3>{this.strings.OpportunityDetails}:</h3>
-                            <p>
-                                <h4>{this.strings.ProgramArea}</h4>
-                                {this.state.program}
-                            </p>
-                            <p>
-                                <h4>{this.strings.classification}</h4>
-                                {this.state.classification}
-                            </p>
-                            <p>
-                                <h4>{this.strings.Department}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.Department.NameFr) : (this.state.Department.NameEn)}
-                            </p>
-                            <p>
-                                <h4>{strings.NumberOpportunities}</h4>
-                                {this.state.Nmb_opt}
-                            </p>
-                            <p>
-                                <h4>{this.strings.Duration}</h4>
-                                {this.state.DurationQuantity + " "}
-                                {this.props.prefLang === "fr-fr" ? (this.state.Duration.NameFr) : (this.state.Duration.NameEn)}
-                            </p>
-                            <p>
-                                <h4>{this.strings.ApplicationDeadline}</h4>
-                                {this.state.AppDeadline}
-                            </p>
-                            <p>
-                                <h4>{this.strings.WorkArrangement}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.Work_Arr.NameFr) : (this.state.Work_Arr.NameEn)}
-                            </p>
-                            <p>
-                                <h4>{this.strings.Location}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.LocationFr) : (this.state.LocationEn)}
-                            </p>
-                            <p>
-                                <h4>{this.strings.SecurityLevel}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.sec_lvl.NameFr) : (this.state.sec_lvl.NameEn)}
-                            </p>
-                            <p>
-                                <h4>{this.strings.LanguageRequirements}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.Language.NameFr) : (this.state.Language.NameEn)}
-                                {' '}{ this.state.LanguageComprehension }
-                            </p>
-                            <p>
-                                <h4>{this.strings.skills}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.skills.fr) : (this.state.skills.en)}
-                            </p>
-                            <p>
-                                <h4>{this.strings.workSchedule}</h4>
-                                {this.props.prefLang === "fr-fr" ? (this.state.WorkSchedule.NameFr) : (this.state.WorkSchedule.NameEn)}
-                            </p>
+                            <b>{this.strings.Location}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.LocationFr) : (this.state.LocationEn)}</span>
                         </div>
-                        {this.props.prefLang === "fr-fr" ? (
-                            <PrimaryButton 
-                                text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
-                                styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
-                                href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
-                                aria-describedby='JobTitle' 
-                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
-                            />
-                        ) : (
-                            <PrimaryButton 
-                                text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
-                                disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
-                                styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
-                                href={`mailto:${this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
-                                aria-describedby='JobTitle'
-                                aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
-                            />
-                        )}
+                        <div>
+                            <b>{this.strings.workSchedule}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.WorkSchedule.NameFr) : (this.state.WorkSchedule.NameEn)}</span>
+                        </div>
+                        <div>
+                            <b>{this.strings.SecurityLevel}:</b> <span>{this.props.prefLang === "fr-fr" ? (this.state.sec_lvl.NameFr) : (this.state.sec_lvl.NameEn)}</span>
+                        </div>
+                        <div>
+                            <b>{this.strings.NumberOpportunities}:</b> <span>{this.state.Nmb_opt}</span>
+                        </div>
+                    </div>
 
-                        {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
-                            <PrimaryButton 
-                                className={styles.margin_edit_buttom} 
-                                text={this.strings.Edit} 
-                                onClick={() => {
-                                    window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
-                                }}
-                                aria-describedby='JobTitle'
-                                aria-label={this.strings.Edit} 
-                            />
-                        ) : (<></>)}   
-
-                        {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
-                            <PrimaryButton 
-                                onClick={this.toggleModal} 
-                                disabled={this.state.deleteLoading || this.state.deleted} 
-                                className={styles.margin_edit_buttom} 
-                                text={this.strings.Delete} 
-                                styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
-                                aria-describedby='JobTitle'
-                                aria-label={this.strings.Delete}
-                                />
-                        ) : (<></>)}  
-
-                        <Modal 
-                            isOpen={this.state.modalOpen} 
-                            onDismiss={this.toggleModal}
-                            styles={{main: {width: '50%', maxWidth: '585px', borderRadius: '5px'}}}
-                        >
-                            <div className={`${styles.deleteModal}`}>
-                                <div className={`${styles.modalHeader}`}>
-                                    <h2 id={`cm-delete-${this.state.OptId}-title`}>
-                                        {this.strings.dialogTitle}
-                                    </h2>
-                                    <IconButton 
-                                        onClick={this.toggleModal} 
-                                        iconProps={{iconName: 'ChromeClose'}} 
-                                        styles={{icon: {color: 'inherit', backgroundColor: 'transparent', fontSize: 'small'}}}
-                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
-                                        aria-label={this.strings.cancel}
-                                    />
+                    <h2>{this.strings.skills}</h2>
+                    <div className={styles.tagSection}style={{paddingTop: 0}}>
+                        {(this.props.prefLang === "fr-fr" ? this.state.SkillsFr : this.state.SkillsEn)
+                            .map((name, index) => (
+                                <div key={index} className={styles.tag} style={{backgroundColor: '#DAE8E8'}}>
+                                    <span style={{fontWeight: '400', fontSize: '14px'}}>
+                                        {name}
+                                    </span>
                                 </div>
-                                <p 
-                                    dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.strings.dialogText)}} 
-                                    id={`cm-delete-${this.state.OptId}-content`} 
+                        ))}
+                    </div>
+                </div>
+
+                <div className={styles.buttonSection}>
+                    {this.props.prefLang === "fr-fr" ? (
+                        <PrimaryButton 
+                            text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
+                            disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
+                            styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
+                            href={`mailto:${this.state.ApplyEmail ? this.state.ApplyEmail : this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
+                            aria-describedby='JobTitle' 
+                            aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
+                        />
+                    ) : (
+                        <PrimaryButton 
+                            text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
+                            disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
+                            styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
+                            href={`mailto:${this.state.ApplyEmail ? this.state.ApplyEmail : this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
+                            aria-describedby='JobTitle'
+                            aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
+                        />
+                    )}
+                    {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
+                        <PrimaryButton 
+                            className={styles.margin_edit_buttom} 
+                            text={this.strings.Edit} 
+                            onClick={() => {
+                                window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
+                            }}
+                            aria-describedby='JobTitle'
+                            aria-label={this.strings.Edit} 
+                        />
+                    ) : (<></>)}   
+                    {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
+                        <PrimaryButton 
+                            onClick={this.toggleModal} 
+                            disabled={this.state.deleteLoading || this.state.deleted} 
+                            className={styles.margin_edit_buttom} 
+                            text={this.strings.Delete} 
+                            styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
+                            aria-describedby='JobTitle'
+                            aria-label={this.strings.Delete}
+                            />
+                    ) : (<></>)}  
+                    <Modal 
+                        isOpen={this.state.modalOpen} 
+                        onDismiss={this.toggleModal}
+                        styles={{main: {width: '50%', maxWidth: '585px', borderRadius: '5px'}}}
+                    >
+                        <div className={`${styles.deleteModal}`}>
+                            <div className={`${styles.modalHeader}`}>
+                                <h2 id={`cm-delete-${this.state.OptId}-title`}>
+                                    {this.strings.dialogTitle}
+                                </h2>
+                                <IconButton 
+                                    onClick={this.toggleModal} 
+                                    iconProps={{iconName: 'ChromeClose'}} 
+                                    styles={{icon: {color: 'inherit', backgroundColor: 'transparent', fontSize: 'small'}}}
+                                    aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                    aria-label={this.strings.cancel}
                                 />
-                                <div className={`${styles.modalActions}`}>
-                                    <DefaultButton 
-                                        text={this.strings.cancel}
-                                        onClick={this.toggleModal}
-                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
-                                        aria-label={this.strings.cancel}
-                                    />
-                                    <PrimaryButton 
-                                        onClick={this.deleteOpportunity} 
-                                        disabled={this.state.deleteLoading || this.state.deleted} 
-                                        text={this.strings.Delete} 
-                                        styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
-                                        aria-describedby={`cm-delete-${this.state.OptId}-title`}
-                                        aria-label={this.strings.Delete}
-                                    />
-                                </div>
                             </div>
-                        </Modal>  
+                            <p 
+                                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.strings.dialogText)}} 
+                                id={`cm-delete-${this.state.OptId}-content`} 
+                            />
+                            <div className={`${styles.modalActions}`}>
+                                <DefaultButton 
+                                    text={this.strings.cancel}
+                                    onClick={this.toggleModal}
+                                    aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                    aria-label={this.strings.cancel}
+                                />
+                                <PrimaryButton 
+                                    onClick={this.deleteOpportunity} 
+                                    disabled={this.state.deleteLoading || this.state.deleted} 
+                                    text={this.strings.Delete} 
+                                    styles={this.state.deleteLoading ? undefined : { rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
+                                    aria-describedby={`cm-delete-${this.state.OptId}-title`}
+                                    aria-label={this.strings.Delete}
+                                />
+                            </div>
+                        </div>
+                    </Modal>  
                 </div>
                 </>    
                 )

@@ -10,15 +10,6 @@
   }
 }
 
-.welcome {
-  text-align: left;
-}
-
-.welcomeImage {
-  width: 100%;
-  max-width: 420px;
-}
-
 .links {
   a {
     text-decoration: none;
@@ -32,6 +23,63 @@
     }
   }
 }
+
+.subDate {
+  span {
+    font-weight: 400;
+    font-size: 14px;
+    color: #595854;
+  }
+  span:nth-child(2) {
+    margin: 0 8px;
+  }
+}
+
+.tagSection{
+  padding-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid #016D70;
+  border-radius: 15px;
+  padding: 6px 12px 6px 12px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  span {
+    font-weight: 600;
+    font-size: 16px;
+  }
+}
+
+.description {
+  white-space: pre-line;
+}
+
+.details {
+  div {
+    padding-bottom: 10px;
+  }
+
+  div:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.buttonSection {
+  padding-top:10px;
+}
+
+
+
+
+
+
+
+
+
+
 
 .jobtype_space{
     padding-right:10%;
