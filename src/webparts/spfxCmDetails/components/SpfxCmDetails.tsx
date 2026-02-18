@@ -295,8 +295,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             this.setState({
                 TitleFr: item.JobTitleFr,
                 TitleEn: item.JobTitleEn,
-                DescEn: item.JobDescriptionEn,
-                DescFr: item.JobDescriptionFr,
+                DescEn: DOMPurify.sanitize(item.JobDescriptionEn),
+                DescFr: DOMPurify.sanitize(item.JobDescriptionFr),
                 JobType: await this._get_terms(this.env.jobTypeTermSetId, jobTypeTermGuid),
                 program: await this._get_terms(this.env.programAreaTermSetId, programAreaTermGuid),
                 classification: `${item.ClassificationCode.NameEn}-${item.ClassificationLevel.NameEn}`,
@@ -499,7 +499,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 <section>
                     <h2>{this.strings.aboutThisOpt}</h2>
                     <div className={styles.description} 
-                        dangerouslySetInnerHTML={{__html: this.props.prefLang === "fr-fr" ? (this.state.DescFr) : (this.state.DescEn)}} 
+                        dangerouslySetInnerHTML={{__html: this.props.prefLang === "fr-fr" ? this.state.DescFr : this.state.DescEn}} 
                     />
                 </section>
                 
