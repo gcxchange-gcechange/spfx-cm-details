@@ -42,6 +42,9 @@ define([], function() {
     "workSchedule": "Work schedule",
     "skills": "Skills",
     "noOpportunitiy": "Sorry! This opportunity does not exist.",
-    "contactSupport": "Please, try another one or reach out to our support team."
+    "contactSupport": "Please, try another one or reach out to our support team.",
+    "posted": "Posted",
+    "aboutThisOpt": "About this opportunity",
+    "moreDetails": "More details"
   }
 });

@@ -42,6 +42,9 @@ declare interface ISpfxCmDetailsWebPartStrings {
   skills: string;
   noOpportunitiy: string;
   contactSupport: string;
+  posted: string;
+  aboutThisOpt: string;
+  moreDetails: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {

@@ -6,17 +6,8 @@
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
-    font-family: $ms-font-family-fallbacks;
+    font-family: 'Inter', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
   }
-}
-
-.welcome {
-  text-align: left;
-}
-
-.welcomeImage {
-  width: 100%;
-  max-width: 420px;
 }
 
 .links {
@@ -33,17 +24,90 @@
   }
 }
 
-.jobtype_space{
-    padding-right:10%;
+.detailsbase {
+  font-family: 'Inter', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.desc_bold{
-    font-weight:600;
+h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 32px;
 }
 
-.deadline_type_section {
-    padding-bottom: 5%;
-    display:block;
+h2 {
+  font-size: 26px;
+}
+
+h1, h2 {
+  font-weight: 600;
+}
+
+.subDate {
+  span,
+  time {
+    font-weight: 400;
+    font-size: 14px;
+    color: #595854;
+  }
+  span:nth-child(2) {
+    margin: 0 8px;
+  }
+}
+
+.tagSection{
+  margin: 0;
+  padding: 0;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid #016D70;
+  border-radius: 15px;
+  padding: 6px 12px 6px 12px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  span {
+    font-weight: 600;
+    font-size: 16px;
+  }
+}
+
+.description {
+  white-space: pre-line;
+}
+
+.details {
+  div {
+    padding-bottom: 10px;
+    margin-left: -2px;
+
+    dt, dd {
+      display: inline-table;
+    }
+
+    dt {
+      font-weight: 600;
+    }
+    
+    dd {
+      margin-left: 5px;
+    }
+
+    i {
+      width: 25px;
+      display: inline-table;
+      text-align: center;
+    }
+  }
+
+  div:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.buttonSection {
+  padding-top: 20px;
 }
 
 .margin_edit_buttom {
@@ -127,8 +191,4 @@
     margin: 0 30px 20px;
     justify-content: space-between;
   }
-}
-
-.retention {
-  padding-bottom: 5%;
 }

@@ -13,14 +13,14 @@ define([], function () {
         "AppOfficeEnvironment": "The app is running in office.com",
         "AppOutlookEnvironment": "The app is running in Outlook",
         "UnknownEnvironment": "The app is running in an unknown environment",
-        "ApplicationDeadline": "Date limite de candidature",
+        "ApplicationDeadline": "Date limite de la candidature",
         "JobType": "Type d'emploi",
         "OpportunityDetails": "Détails de la possibilité d’emploi",
         "ProgramArea": "Secteur de programme",
         "Department": "Ministère",
-        "NumberOpportunities": "Nombre de possibilités d'emploi",
+        "NumberOpportunities": "Nombre d’opportunités",
         "Duration": "Durée de la possibilité d’emploi",
-        "WorkArrangement": "Régime de travail",
+        "WorkArrangement": "Modalité de travail",
         "Location": "Lieu",
         "SecurityLevel": "Niveau de sécurité",
         "LanguageRequirements": "Exigences linguistiques",
@@ -40,9 +40,12 @@ define([], function () {
         "Retention": "Pour que le marché de carrière soit toujours à jour et pertinent, <strong>les messages de possibilité d’emploi sont automatiquement supprimés six mois après la date limite de candidature.</strong> Nous vous recommandons donc d’en sauvegarder une copie pour vos dossiers",
         "emailSubject": "Demande de récupération d’une possibilité d’emploi supprimée dans le marché de carrière",
         "classification": "Classification",
-        "workSchedule": "Horaire de travail",
+        "workSchedule": "Temps de travail",
         "skills": "Compétences",
         "noOpportunitiy": "Désolé ! Cette opportunité n'est pas disponible.",
-        "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support."
+        "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support.",
+        "posted": "Publié",
+        "aboutThisOpt": "À propos de cette opportunité",
+        "moreDetails": "Plus de détails"
     }
 });
