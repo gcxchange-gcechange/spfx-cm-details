@@ -224,31 +224,37 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 "SecurityClearance", 
                 "LanguageRequirement"
             )();
-            console.log(item);
 
-            const city = await _sp.web.lists.getByTitle("City").items.getById(item.City.Id)
-            .select(
-                "NameEn", 
-                "NameFr", 
-                "Region", 
-                "Region/Id"
-            )
-            .expand(
-                "Region"
-            )();
+            //console.log(item);
 
-            const region = await _sp.web.lists.getByTitle("Region").items.getById(city.Region.Id)
-            .select(
-                "NameEn", 
-                "NameFr", 
-                "Province", 
-                "Province/Id",
-                "Province/NameEn",
-                "Province/NameFr"
-            )
-            .expand(
-                "Province"
-            )();
+            let city: any = null;
+            let region: any = null;
+
+            if (item.City) {
+                city = await _sp.web.lists.getByTitle("City").items.getById(item.City.Id)
+                .select(
+                    "NameEn", 
+                    "NameFr", 
+                    "Region", 
+                    "Region/Id"
+                )
+                .expand(
+                    "Region"
+                )();
+
+                region = await _sp.web.lists.getByTitle("Region").items.getById(city.Region.Id)
+                .select(
+                    "NameEn", 
+                    "NameFr", 
+                    "Province", 
+                    "Province/Id",
+                    "Province/NameEn",
+                    "Province/NameFr"
+                )
+                .expand(
+                    "Province"
+                )();
+            }
 
             const querySkills = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
             .select(
@@ -306,8 +312,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 Duration: item.Duration,
                 DurationQuantity: item.DurationQuantity,
                 Work_Arr:item.WorkArrangement,
-                LocationEn: `${item.City.NameEn}, ${region.NameEn}, ${region.Province.NameEn}`,
-                LocationFr: `${item.City.NameFr}, ${region.NameFr}, ${region.Province.NameFr}`,
+                LocationEn: item.City ? `${item.City.NameEn}, ${region.NameEn}, ${region.Province.NameEn}` : this.strings.remote,
+                LocationFr: item.City ? `${item.City.NameFr}, ${region.NameFr}, ${region.Province.NameFr}` : this.strings.remote,
                 sec_lvl: item.SecurityClearance,
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,

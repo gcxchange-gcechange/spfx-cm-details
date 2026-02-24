@@ -46,6 +46,7 @@ define([], function () {
         "contactSupport": "Veuillez choisir une autre opportunité ou contacter l'équipe du support.",
         "posted": "Publié",
         "aboutThisOpt": "À propos de cette opportunité",
-        "moreDetails": "Plus de détails"
+        "moreDetails": "Plus de détails",
+        "remote": "À distance"
     }
 });

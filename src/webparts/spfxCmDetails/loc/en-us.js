@@ -45,6 +45,7 @@ define([], function() {
     "contactSupport": "Please, try another one or reach out to our support team.",
     "posted": "Posted",
     "aboutThisOpt": "About this opportunity",
-    "moreDetails": "More details"
+    "moreDetails": "More details",
+    "remote": "Remote"
   }
 });

@@ -45,6 +45,7 @@ declare interface ISpfxCmDetailsWebPartStrings {
   posted: string;
   aboutThisOpt: string;
   moreDetails: string;
+  remote: string;
 }
 
 declare module 'SpfxCmDetailsWebPartStrings' {
