@@ -46,6 +46,7 @@ define([], function() {
     "posted": "Posted",
     "aboutThisOpt": "About this opportunity",
     "moreDetails": "More details",
-    "remote": "Remote"
+    "remote": "Remote",
+    "exportPDF": "Export to PDF"
   }
 });

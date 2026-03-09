@@ -574,8 +574,9 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             aria-describedby='JobTitle'
                             aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
                         />
-                    )}
+                    )}  
                     {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
+                        <>
                         <PrimaryButton 
                             className={styles.margin_edit_buttom} 
                             text={this.strings.Edit} 
@@ -585,8 +586,15 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             aria-describedby='JobTitle'
                             aria-label={this.strings.Edit} 
                         />
-                    ) : (<></>)}   
-                    {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
+                        <DefaultButton 
+                            onClick={() => {
+                                window.print();
+                            }} 
+                            className={styles.margin_edit_buttom} 
+                            text={this.strings.exportPDF} 
+                            aria-describedby='JobTitle'
+                            aria-label={this.strings.exportPDF}
+                        />
                         <PrimaryButton 
                             onClick={this.toggleModal} 
                             disabled={this.state.deleteLoading || this.state.deleted} 
@@ -595,7 +603,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
                             aria-describedby='JobTitle'
                             aria-label={this.strings.Delete}
-                            />
+                        />
+                        </>
                     ) : (<></>)}  
                     <Modal 
                         isOpen={this.state.modalOpen} 

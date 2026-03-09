@@ -47,6 +47,7 @@ define([], function () {
         "posted": "Publié",
         "aboutThisOpt": "À propos de cette opportunité",
         "moreDetails": "Plus de détails",
-        "remote": "À distance"
+        "remote": "À distance",
+        "exportPDF": "Exporter au format PDF"
     }
 });
