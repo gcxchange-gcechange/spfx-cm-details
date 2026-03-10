@@ -47,6 +47,6 @@ define([], function() {
     "aboutThisOpt": "About this opportunity",
     "moreDetails": "More details",
     "remote": "Remote",
-    "exportPDF": "Export to PDF"
+    "exportPDF": "Print to PDF"
   }
 });

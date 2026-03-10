@@ -192,3 +192,10 @@ h1, h2 {
     justify-content: space-between;
   }
 }
+
+@media print {
+  .margin_edit_buttom,
+  .no-print {
+    display: none;
+  }
+}

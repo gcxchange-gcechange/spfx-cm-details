@@ -48,6 +48,6 @@ define([], function () {
         "aboutThisOpt": "À propos de cette opportunité",
         "moreDetails": "Plus de détails",
         "remote": "À distance",
-        "exportPDF": "Exporter au format PDF"
+        "exportPDF": "Imprimer en PDF"
     }
 });
