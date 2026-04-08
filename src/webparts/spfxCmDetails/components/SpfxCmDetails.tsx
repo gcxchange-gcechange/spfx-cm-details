@@ -225,7 +225,9 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 "LanguageRequirement"
             )();
 
-            //console.log(item);
+            console.log(item);
+            console.log("City", item.City);
+            console.log("City typeof", typeof item.City);
 
             let city: any = null;
             let region: any = null;
