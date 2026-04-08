@@ -305,6 +305,16 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             // console.log("jobTypeTermGuid", jobTypeTermGuid);
             // console.log("programAreaTermGuid", programAreaTermGuid);
 
+            let locationEn = this.strings.remote;
+            let locationFr = this.strings.remote;
+
+            try {
+                locationEn = item.City ? `${item.City?.NameEn}, ${region ? region?.NameEn : 'null'}, ${region && region?.Province ? region?.Province?.NameEn : 'null'}` : this.strings.remote;
+                locationFr = item.City ? `${item.City?.NameFr}, ${region ? region?.NameFr : 'null'}, ${region && region?.Province ? region?.Province?.NameFr : 'null'}` : this.strings.remote;
+            } catch (e) { 
+                console.error('Error building location string', e);
+            }
+
             this.setState({
                 TitleFr: item.JobTitleFr,
                 TitleEn: item.JobTitleEn,
@@ -319,8 +329,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 Duration: item.Duration,
                 DurationQuantity: item.DurationQuantity,
                 Work_Arr:item.WorkArrangement,
-                LocationEn: item.City ? `${item.City?.NameEn}, ${region ? region?.NameEn : 'null'}, ${region && region?.Province ? region?.Province?.NameFr : 'null'}` : this.strings.remote,
-                LocationFr: item.City ? `${item.City?.NameFr}, ${region ? region?.NameFr : 'null'}, ${region && region?.Province ? region?.Province?.NameFr : 'null'}` : this.strings.remote,
+                LocationEn: locationEn,
+                LocationFr: locationFr,
                 sec_lvl: item.SecurityClearance,
                 Language: item.LanguageRequirement,
                 ContactEmail: item.ContactEmail,
