@@ -4,3 +4,4 @@ form-data
 jsonpath-plus
 path-to-regexp
 semver
+validator
