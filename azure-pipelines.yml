@@ -47,6 +47,20 @@ jobs:
       echo "High vulnerabilities (excluding ignored packages): $high"
       echo "Critical vulnerabilities (excluding ignored packages): $critical"
 
+      echo ""
+      echo "Affected packages (excluding ignored):"
+      echo "------------------------------------"
+
+      jq -r --argjson ignored "$ignored" '
+        .vulnerabilities[]
+        | select(.name as $name | ($ignored | index($name) | not))
+        | .name
+      ' npm-audit.json | sort -u | while read pkg; do
+        echo "$pkg"
+      done
+
+      echo "------------------------------------"
+
       if [ "$high" -gt 0 ] || [ "$critical" -gt 0 ]; then
         echo "##vso[task.logissue type=error]npm audit found $high high and $critical critical vulnerabilities."
         echo "##vso[task.complete result=Failed;]npm audit failed due to high/critical vulnerabilities."
