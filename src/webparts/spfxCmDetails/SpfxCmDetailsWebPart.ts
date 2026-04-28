@@ -3,9 +3,11 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   type IPropertyPaneConfiguration,
-    PropertyPaneDropdown
+    PropertyPaneDropdown,
+    PropertyPaneTextField,
+    PropertyPaneChoiceGroup
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart,  WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpfxCmDetailsWebPartStrings';
@@ -17,6 +19,7 @@ export interface ISpfxCmDetailsWebPartProps {
     description: string;
     context: WebPartContext;
     prefLang: string;
+    environment: string;
 }
 
 export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmDetailsWebPartProps> {
@@ -35,6 +38,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
           userDisplayName: this.context.pageContext.user.displayName,
         prefLang: this.properties.prefLang,
+        environment: this.properties.environment,
       }
     );
 
@@ -99,10 +103,23 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
     return Version.parse('1.0');
   }
 
+  protected onPropertyPaneFieldChanged(propertyPath: string): void {
+    console.log(`Property pane field changed: ${propertyPath}`);
+    if (propertyPath === 'environment') {
+      this.context.propertyPane.refresh();
+    }
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+
+    const isDEV = this.properties.environment === 'dev';
+    const isUAT = this.properties.environment === 'uat';
+    const isPROD = this.properties.environment === 'prod';
+
     return {
       pages: [
         {
+          displayGroupsAsAccordion: true,
           header: {
             description: strings.PropertyPaneDescription
           },
@@ -119,7 +136,116 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                       ]
                   }),
               ]
-            }
+            },
+             {
+              groupName: "Environment Settings",
+                groupFields: [
+                  PropertyPaneChoiceGroup('environment', {
+                    label: 'Environment Configuration',
+
+                    options: [
+                      { key: 'dev', text: 'Development' },
+                      { key: 'uat', text: 'UAT' },
+                      { key: 'prod', text: 'Production' },
+                    ]
+                  })
+                ]
+            },
+            ...(isDEV ? [
+              {
+                groupName: 'DEV Settings',
+                isCollapsed:true,
+                groupFields: [
+                  PropertyPaneTextField('devClientId', {
+                    label: 'Client ID',
+                    description: 'The ID of the client.'
+                  }),
+                  PropertyPaneTextField('devCreateJobApiUrl', {
+                    label: 'Create Job API URL',
+                    description: 'The URL of the create job API.'
+                  }),
+                  PropertyPaneTextField('devEditJobApiUrl', {
+                    label: 'Edit Job API URL',
+                    description: 'The URL of the edit job API.'
+                  }),
+                  PropertyPaneTextField('devJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('devJobTypeDeploymentId', {
+                    label: 'Job Type Deployment ID',
+                    description: 'The ID of the job type deployment term.'
+                  }),
+                   PropertyPaneTextField('devProgramAreaTermId', {
+                    label: 'Program Area Term ID',
+                    description: 'The ID of the program area term set.'
+                  }),
+                ]
+              }] : []),
+
+              ...(isUAT ? [
+              {
+                groupName: 'UAT Settings',
+                isCollapsed:true,
+                groupFields: [
+                   PropertyPaneTextField('uatClientId', {
+                    label: 'Client ID',
+                    description: 'The ID of the client.'
+                  }),
+                  PropertyPaneTextField('uatCreateJobApiUrl', {
+                    label: 'Create Job API URL',
+                    description: 'The URL of the create job API.'
+                  }),
+                  PropertyPaneTextField('uatEditJobApiUrl', {
+                    label: 'Edit Job API URL',
+                    description: 'The URL of the edit job API.'
+                  }),
+                  PropertyPaneTextField('uatJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('uatJobTypeDeploymentId', {
+                    label: 'Job Type Deployment ID',
+                    description: 'The ID of the job type deployment term.'
+                  }),
+                   PropertyPaneTextField('uatProgramAreaTermId', {
+                    label: 'Program Area Term ID',
+                    description: 'The ID of the program area term set.'
+                  }),
+                ]
+              }]: []),
+
+              ...(isPROD ? [
+              {
+                groupName: 'PROD Settings',
+                isCollapsed:true,
+                groupFields: [
+                  PropertyPaneTextField('prodClientId', {
+                    label: 'Client ID',
+                    description: 'The ID of the client.'
+                  }),
+                  PropertyPaneTextField('prodCreateJobApiUrl', {
+                    label: 'Create Job API URL',
+                    description: 'The URL of the create job API.'
+                  }),
+                  PropertyPaneTextField('prodEditJobApiUrl', {
+                    label: 'Edit Job API URL',
+                    description: 'The URL of the edit job API.'
+                  }),
+                  PropertyPaneTextField('prodJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('prodJobTypeDeploymentId', {
+                    label: 'Job Type Deployment ID',
+                    description: 'The ID of the job type deployment term.'
+                  }),
+                   PropertyPaneTextField('prodProgramAreaTermId', {
+                    label: 'Program Area Term ID',
+                    description: 'The ID of the program area term set.'
+                  }),
+                ]
+              }]: []),
           ]
         }
       ]

@@ -8,4 +8,5 @@ export interface ISpfxCmDetailsProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   prefLang: string;
+  environment: string;
 }
