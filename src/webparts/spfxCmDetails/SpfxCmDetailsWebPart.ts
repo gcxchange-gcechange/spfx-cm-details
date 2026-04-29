@@ -156,30 +156,27 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                 groupName: 'DEV Settings',
                 isCollapsed:true,
                 groupFields: [
-                  PropertyPaneTextField('devClientId', {
-                    label: 'Client ID',
-                    description: 'The ID of the client.'
-                  }),
-                  PropertyPaneTextField('devCreateJobApiUrl', {
-                    label: 'Create Job API URL',
-                    description: 'The URL of the create job API.'
-                  }),
-                  PropertyPaneTextField('devEditJobApiUrl', {
-                    label: 'Edit Job API URL',
-                    description: 'The URL of the edit job API.'
+                  PropertyPaneTextField('devCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
                   }),
                   PropertyPaneTextField('devJobTypeTermId', {
                     label: 'Job Type Term ID',
                     description: 'The ID of the job type term set.'
                   }),
-                  PropertyPaneTextField('devJobTypeDeploymentId', {
-                    label: 'Job Type Deployment ID',
-                    description: 'The ID of the job type deployment term.'
+                  PropertyPaneTextField('devProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('devProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                  PropertyPaneTextField('devAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
                   }),
-                   PropertyPaneTextField('devProgramAreaTermId', {
-                    label: 'Program Area Term ID',
-                    description: 'The ID of the program area term set.'
-                  }),
+                 
                 ]
               }] : []),
 
@@ -188,29 +185,25 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                 groupName: 'UAT Settings',
                 isCollapsed:true,
                 groupFields: [
-                   PropertyPaneTextField('uatClientId', {
-                    label: 'Client ID',
-                    description: 'The ID of the client.'
-                  }),
-                  PropertyPaneTextField('uatCreateJobApiUrl', {
-                    label: 'Create Job API URL',
-                    description: 'The URL of the create job API.'
-                  }),
-                  PropertyPaneTextField('uatEditJobApiUrl', {
-                    label: 'Edit Job API URL',
-                    description: 'The URL of the edit job API.'
+                    PropertyPaneTextField('uatCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
                   }),
                   PropertyPaneTextField('uatJobTypeTermId', {
                     label: 'Job Type Term ID',
                     description: 'The ID of the job type term set.'
                   }),
-                  PropertyPaneTextField('uatJobTypeDeploymentId', {
-                    label: 'Job Type Deployment ID',
-                    description: 'The ID of the job type deployment term.'
-                  }),
-                   PropertyPaneTextField('uatProgramAreaTermId', {
-                    label: 'Program Area Term ID',
-                    description: 'The ID of the program area term set.'
+                  PropertyPaneTextField('uatProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('uatProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                  PropertyPaneTextField('uatAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
                   }),
                 ]
               }]: []),
@@ -220,32 +213,29 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                 groupName: 'PROD Settings',
                 isCollapsed:true,
                 groupFields: [
-                  PropertyPaneTextField('prodClientId', {
-                    label: 'Client ID',
-                    description: 'The ID of the client.'
-                  }),
-                  PropertyPaneTextField('prodCreateJobApiUrl', {
-                    label: 'Create Job API URL',
-                    description: 'The URL of the create job API.'
-                  }),
-                  PropertyPaneTextField('prodEditJobApiUrl', {
-                    label: 'Edit Job API URL',
-                    description: 'The URL of the edit job API.'
+                  PropertyPaneTextField('prodCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
                   }),
                   PropertyPaneTextField('prodJobTypeTermId', {
                     label: 'Job Type Term ID',
                     description: 'The ID of the job type term set.'
                   }),
-                  PropertyPaneTextField('prodJobTypeDeploymentId', {
-                    label: 'Job Type Deployment ID',
-                    description: 'The ID of the job type deployment term.'
-                  }),
-                   PropertyPaneTextField('prodProgramAreaTermId', {
-                    label: 'Program Area Term ID',
-                    description: 'The ID of the program area term set.'
+                  PropertyPaneTextField('prodProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('prodProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                  PropertyPaneTextField('prodAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
                   }),
                 ]
               }]: []),
+              
           ]
         }
       ]
