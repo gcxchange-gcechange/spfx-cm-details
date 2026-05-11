@@ -17,6 +17,7 @@ import { AadHttpClient, IHttpClientOptions, HttpClientResponse } from '@microsof
 
 // @ts-expect-error need this for some reason, * won't work.
 import createDOMPurify from 'dompurify';
+import { getEnvConfig } from './EnviromentConfig';
 const DOMPurify = createDOMPurify(window);
 
 export interface ISpfxCmDetailsState {
@@ -62,23 +63,36 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
     /*
         REPLACE THESE FOR YOUR BUILD
     */
-    private env = {
-        careerMarketplaceTermSetId: '656c725c-def6-46cd-86df-b51f1b22383e',
-        jobTypeTermSetId: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e',
-        programAreaTermSetId: 'bd807536-d8e7-456b-aab0-fae3eecedd8a',
-        programAreaColumnName: 'Program_Area',
-        authClientId: 'c121f403-ff41-4db3-8426-f3b9c5016cd4',
-        deleteApiUrl: 'https://appsvc-function-dev-cm-listmgmt-dotnet001.azurewebsites.net/api/DeleteJobOpportunity?',
-        careerMarketplaceHomePage: 'https://devgcx.sharepoint.com/sites/CM-test',
-        editOpportunityPage: 'https://devgcx.sharepoint.com/sites/CM-test/SitePages/editOpportunity.aspx?JobOpportunityId='
-    }
+    // private env = {
+    //     careerMarketplaceTermSetId: '656c725c-def6-46cd-86df-b51f1b22383e',
+    //     jobTypeTermSetId: '45f37f08-3ff4-4d84-bf21-4a77ddffcf3e',
+    //     programAreaTermSetId: 'bd807536-d8e7-456b-aab0-fae3eecedd8a',
+    //     programAreaColumnName: 'Program_Area',
+    //     authClientId: 'c121f403-ff41-4db3-8426-f3b9c5016cd4',
+    //     deleteApiUrl: 'https://appsvc-function-dev-cm-listmgmt-dotnet001.azurewebsites.net/api/DeleteJobOpportunity?',
+    //     careerMarketplaceHomePage: 'https://devgcx.sharepoint.com/sites/CM-test',
+    //     editOpportunityPage: 'https://devgcx.sharepoint.com/sites/CM-test/SitePages/editOpportunity.aspx?JobOpportunityId='
+    // }
 
-    private envValid(): boolean {
-        return Object.keys(this.env).some(key => {
-            const value = this.env[key as keyof typeof this.env];
+    private config = getEnvConfig(this.props.environment, this.props)
+
+    private envValid():boolean {
+        return Object.keys(this.config).some((key: any) => {
+            console.log("key", key)
+            const value = this.config[key as keyof typeof this.config]
             return value === '' || value === null || value === undefined;
-        });
+        })
     }
+ 
+
+    // private envValid (): boolean {
+    //     return Object.keys(this.env).some(key => {
+    //         const value = this.env[key as keyof typeof this.env];
+    //         return value === '' || value === null || value === undefined;
+    //     });
+    // }
+
+    
 
     constructor(props: ISpfxCmDetailsProps, state: ISpfxCmDetailsState) {
         super(props);
@@ -121,6 +135,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
         if (!this.envValid()) 
             console.error('Check your env settings, something is missing!');
+
     }
 
     public async componentDidMount(): Promise<void> {
@@ -190,7 +205,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 "ContactEmail", 
                 "ApplyEmail", 
                 "ContactName", 
-                this.env.programAreaColumnName, 
+                this.config.programAreaColumnName, 
                 "JobType", 
                 "Duration", 
                 "Duration/NameEn", 
@@ -289,10 +304,10 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 jobTypeTermGuid = item.JobType.TermGuid;
             }
 
-            if (Array.isArray(item[this.env.programAreaColumnName])) {
-                programAreaTermGuid = item[this.env.programAreaColumnName].length > 0 ? item[this.env.programAreaColumnName][0].TermGuid : null;
+            if (Array.isArray(item[this.config.programAreaColumnName])) {
+                programAreaTermGuid = item[this.config.programAreaColumnName].length > 0 ? item[this.config.programAreaColumnName][0].TermGuid : null;
             } else {
-                programAreaTermGuid = item[this.env.programAreaColumnName].TermGuid;
+                programAreaTermGuid = item[this.config.programAreaColumnName].TermGuid;
             }
             
             // console.log("jobTypeTermGuid", jobTypeTermGuid);
@@ -303,8 +318,8 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 TitleEn: item.JobTitleEn,
                 DescEn: DOMPurify.sanitize(item.JobDescriptionEn),
                 DescFr: DOMPurify.sanitize(item.JobDescriptionFr),
-                JobType: await this._get_terms(this.env.jobTypeTermSetId, jobTypeTermGuid),
-                program: await this._get_terms(this.env.programAreaTermSetId, programAreaTermGuid),
+                JobType: await this._get_terms(this.config.jobTypeTermId, jobTypeTermGuid),
+                program: await this._get_terms(this.config.programAreaTermId, programAreaTermGuid),
                 classification: `${item.ClassificationCode.NameEn}-${item.ClassificationLevel.NameEn}`,
                 Department: item.Department,
                 AppDeadline: item.ApplicationDeadlineDate.split('T')[0], // convert into format YYYY/MM/DD
@@ -349,7 +364,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 lang_id = 0;
 
             const graph = graphfi().using(SPFx(this.props.context));
-            const info: TermStore.Term = await graph.termStore.groups.getById(this.env.careerMarketplaceTermSetId).sets.getById(termsetid).getTermById(termsid)();
+            const info: TermStore.Term = await graph.termStore.groups.getById(this.config.careerMarketplaceTermSetId).sets.getById(termsetid).getTermById(termsid)();
 
             return JSON.parse(JSON.stringify(info.labels))[lang_id].name;
         }
@@ -365,7 +380,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         });
 
         try {
-            const aadClient: AadHttpClient = await this.props.context.aadHttpClientFactory.getClient(this.env.authClientId);
+            const aadClient: AadHttpClient = await this.props.context.aadHttpClientFactory.getClient(this.config.authClientId);
 
             const postOptions: IHttpClientOptions = {
                 headers: {
@@ -375,7 +390,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
             };
 
             const response: HttpClientResponse = await aadClient.post(
-                this.env.deleteApiUrl,
+                this.config.deleteAPIURL,
                 AadHttpClient.configurations.v1,
                 postOptions
             );
@@ -447,7 +462,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         />
                         <PrimaryButton
                             text={this.strings.cmHomePage}
-                            href={this.env.careerMarketplaceHomePage}
+                            href={this.config.careerMarketplaceHomePage}
                             aria-describedby={`cm-deleted-${this.state.OptId}-title`}
                             aria-label={this.strings.cmHomePage}
                         />
@@ -583,7 +598,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             className={styles.margin_edit_buttom} 
                             text={this.strings.Edit} 
                             onClick={() => {
-                                window.location.href = `${this.env.editOpportunityPage}${this.state.OptId}`
+                                window.location.href = `${this.config.editOpportunityPage}${this.state.OptId}`
                             }}
                             aria-describedby='JobTitle'
                             aria-label={this.strings.Edit} 

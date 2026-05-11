@@ -20,6 +20,30 @@ export interface ISpfxCmDetailsWebPartProps {
     context: WebPartContext;
     prefLang: string;
     environment: string;
+    devCareerMarketplaceTermSetId: string;
+    devJobTypeTermId: string;
+    devProgramAreaTermId: string;
+    devProgramAreaColumnName: string;
+    devAuthClientId: string;
+    devDeleteAPIURL: string;
+    devCareerMarketplaceHomePage: string;
+    devEditOpportunityPage: string;
+    uatCareerMarketplaceTermSetId: string;
+    uatJobTypeTermId: string;
+    uatProgramAreaTermId: string;
+    uatProgramAreaColumnName: string;
+    uatAuthClientId: string;
+    uatDeleteAPIURL: string;
+    uatCareerMarketplaceHomePage: string;
+    uatEditOpportunityPage: string;
+    prodCareerMarketplaceTermSetId: string;
+    prodJobTypeTermId: string;
+    prodProgramAreaTermId: string;
+    prodProgramAreaColumnName: string;
+    prodAuthClientId: string;
+    prodDeleteAPIURL: string;
+    prodCareerMarketplaceHomePage: string;
+    prodEditOpportunityPage: string;
 }
 
 export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmDetailsWebPartProps> {
@@ -39,6 +63,30 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
           userDisplayName: this.context.pageContext.user.displayName,
         prefLang: this.properties.prefLang,
         environment: this.properties.environment,
+        devCareerMarketplaceTermSetId: this.properties.devCareerMarketplaceTermSetId,
+        devJobTypeTermId: this.properties.devJobTypeTermId,
+        devProgramAreaTermId: this.properties.devProgramAreaTermId,
+        devProgramAreaColumnName: this.properties.devProgramAreaColumnName,
+        devAuthClientId: this.properties.devAuthClientId,
+        devDeleteAPIURL: this.properties.devDeleteAPIURL,
+        devCareerMarketplaceHomePage: this.properties.devCareerMarketplaceHomePage,
+        devEditOpportunityPage: this.properties.devEditOpportunityPage,
+        uatCareerMarketplaceTermSetId: this.properties.uatCareerMarketplaceTermSetId,
+        uatJobTypeTermId: this.properties.uatJobTypeTermId,
+        uatProgramAreaTermId: this.properties.uatProgramAreaTermId,
+        uatProgramAreaColumnName: this.properties.uatProgramAreaColumnName,
+        uatAuthClientId: this.properties.uatAuthClientId,
+        uatDeleteAPIURL: this.properties.uatDeleteAPIURL,
+        uatCareerMarketplaceHomePage: this.properties.uatCareerMarketplaceHomePage,
+        uatEditOpportunityPage  : this.properties.uatEditOpportunityPage,
+        prodCareerMarketplaceTermSetId: this.properties.prodCareerMarketplaceTermSetId,
+        prodJobTypeTermId: this.properties.prodJobTypeTermId,
+        prodProgramAreaTermId: this.properties.prodProgramAreaTermId,
+        prodProgramAreaColumnName: this.properties.prodProgramAreaColumnName,
+        prodAuthClientId: this.properties.prodAuthClientId,
+        prodDeleteAPIURL: this.properties.prodDeleteAPIURL,
+        prodCareerMarketplaceHomePage: this.properties.prodCareerMarketplaceHomePage,
+        prodEditOpportunityPage: this.properties.prodEditOpportunityPage
       }
     );
 
@@ -176,6 +224,18 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
                   }),
+                   PropertyPaneTextField('devDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('devCareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('devEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
+                  }),
                  
                 ]
               }] : []),
@@ -205,6 +265,18 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
                   }),
+                   PropertyPaneTextField('uatDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('uatCareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('uatEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
+                  }),
                 ]
               }]: []),
 
@@ -232,6 +304,18 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                   PropertyPaneTextField('prodAuthClientId', {
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
+                  }),
+                  PropertyPaneTextField('prodDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('prodcareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('prodEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
                   }),
                 ]
               }]: []),
