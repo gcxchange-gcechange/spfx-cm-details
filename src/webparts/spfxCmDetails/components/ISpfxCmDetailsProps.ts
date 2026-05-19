@@ -33,4 +33,5 @@ export interface ISpfxCmDetailsProps {
   prodDeleteAPIURL: string;
   prodCareerMarketplaceHomePage: string;
   prodEditOpportunityPage: string;
+  list: string;
 }

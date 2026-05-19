@@ -78,7 +78,6 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
 
     private envValid():boolean {
         return Object.keys(this.config).some((key: any) => {
-            console.log("key", key)
             const value = this.config[key as keyof typeof this.config]
             return value === '' || value === null || value === undefined;
         })
@@ -184,7 +183,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         const _sp: SPFI = getSP(this.props.context);
 
         try {
-            const item = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
+            const item = await _sp.web.lists.getByTitle(this.props.list).items.getById(valueid)
             .select(
                 "Created",
                 "Department", 
@@ -271,7 +270,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 )();
             }
 
-            const querySkills = await _sp.web.lists.getByTitle("JobOpportunity").items.getById(valueid)
+            const querySkills = await _sp.web.lists.getByTitle(this.props.list).items.getById(valueid)
             .select(
                 "Skills/Id"
             )
@@ -576,7 +575,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
                             disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                             styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
-                            className={styles['no-print']} 
+                            className={styles.noPrint} 
                             href={`mailto:${this.state.ApplyEmail ? this.state.ApplyEmail : this.state.ContactEmail}?subject=${encodeURIComponent(`Intérêt pour l'opportunité ${this.state.TitleFr}`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                             aria-describedby='JobTitle' 
                             aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}
@@ -586,7 +585,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             text={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply} 
                             disabled={this.state.Expired || this.props.context.pageContext.user.email === this.state.ContactEmail} 
                             styles={{rootDisabled: {backgroundColor: '#403F3F', color: '#FFF'}}} 
-                            className={styles['no-print']} 
+                            className={styles.noPrint} 
                             href={`mailto:${this.state.ApplyEmail ? this.state.ApplyEmail : this.state.ContactEmail}?subject=${encodeURIComponent(`Interested in the ${this.state.TitleEn} opportunity`)}&body=${encodeURIComponent(this.populateApplicationEmail())}&JobOpportunityId=${this.state.OptId}`}
                             aria-describedby='JobTitle'
                             aria-label={this.state.Expired ? this.strings.ApplicationsClosed : this.strings.Apply}

@@ -44,6 +44,7 @@ export interface ISpfxCmDetailsWebPartProps {
     prodDeleteAPIURL: string;
     prodCareerMarketplaceHomePage: string;
     prodEditOpportunityPage: string;
+    list: string;
 }
 
 export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmDetailsWebPartProps> {
@@ -86,7 +87,8 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         prodAuthClientId: this.properties.prodAuthClientId,
         prodDeleteAPIURL: this.properties.prodDeleteAPIURL,
         prodCareerMarketplaceHomePage: this.properties.prodCareerMarketplaceHomePage,
-        prodEditOpportunityPage: this.properties.prodEditOpportunityPage
+        prodEditOpportunityPage: this.properties.prodEditOpportunityPage,
+        list: this.properties.list
       }
     );
 
@@ -319,6 +321,15 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                   }),
                 ]
               }]: []),
+              {
+                groupName: 'Job Opportunity List Settings',
+                groupFields:[
+                  PropertyPaneTextField('list', {
+                    label: 'Job Opportunity List Name',
+                    description: 'The name of the job opportunity list.'
+                   }),
+                ]
+              }
               
           ]
         }
@@ -326,3 +337,4 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
     };
   }
 }
+
