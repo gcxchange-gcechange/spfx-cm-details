@@ -594,7 +594,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                     {this.props.context.pageContext.user.email === this.state.ContactEmail ? (
                         <>
                         <PrimaryButton 
-                            className={styles.margin_edit_buttom} 
+                            className={styles.margin_edit_button} 
                             text={this.strings.Edit} 
                             onClick={() => {
                                 window.location.href = `${this.config.editOpportunityPage}${this.state.OptId}`
@@ -606,7 +606,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                             onClick={() => {
                                 window.print();
                             }} 
-                            className={styles.margin_edit_buttom} 
+                            className={styles.margin_edit_button} 
                             text={this.strings.exportPDF} 
                             aria-describedby='JobTitle'
                             aria-label={this.strings.exportPDF}
@@ -614,7 +614,7 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                         <PrimaryButton 
                             onClick={this.toggleModal} 
                             disabled={this.state.deleteLoading || this.state.deleted} 
-                            className={styles.margin_edit_buttom} 
+                            className={styles.margin_edit_button} 
                             text={this.strings.Delete} 
                             styles={{ rootHovered: { backgroundColor: 'rgb(227 16 16)', borderColor: 'rgb(227 16 16)', color: '#FFF' }, root: { backgroundColor: '#A60404', borderColor: '#A60404', color: '#FFF' } }} 
                             aria-describedby='JobTitle'
