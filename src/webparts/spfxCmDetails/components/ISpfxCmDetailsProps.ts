@@ -13,6 +13,7 @@ export interface ISpfxCmDetailsProps {
   devJobTypeTermId: string;
   devProgramAreaTermId: string;
   devProgramAreaColumnName: string;
+  devJobTypeColumnName: string;
   devAuthClientId: string;
   devDeleteAPIURL: string;
   devCareerMarketplaceHomePage: string;
@@ -21,6 +22,7 @@ export interface ISpfxCmDetailsProps {
   uatJobTypeTermId: string;
   uatProgramAreaTermId: string;
   uatProgramAreaColumnName: string;
+  uatJobTypeColumnName: string;
   uatAuthClientId: string;
   uatDeleteAPIURL: string;
   uatCareerMarketplaceHomePage: string;
@@ -29,6 +31,7 @@ export interface ISpfxCmDetailsProps {
   prodJobTypeTermId: string;
   prodProgramAreaTermId: string;
   prodProgramAreaColumnName: string;
+  prodJobTypeColumnName: string;
   prodAuthClientId: string;
   prodDeleteAPIURL: string;
   prodCareerMarketplaceHomePage: string;

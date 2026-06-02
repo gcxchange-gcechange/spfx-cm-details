@@ -5,6 +5,7 @@ export interface IEnvConfig {
   jobTypeTermId: string;
   programAreaTermId: string;
   programAreaColumnName: string;
+  jobTypeColumnName: string;
   authClientId: string;
   deleteAPIURL: string;
   careerMarketplaceHomePage: string;
@@ -18,6 +19,7 @@ export const getEnvConfig = (environment: string, props: any): IEnvConfig => {
       jobTypeTermId: props.devJobTypeTermId,
       programAreaTermId: props.devProgramAreaTermId,
       programAreaColumnName: props.devProgramAreaColumnName,
+      jobTypeColumnName: props.devJobTypeColumnName,
       authClientId: props.devAuthClientId,
       deleteAPIURL: props.devDeleteAPIURL,
       careerMarketplaceHomePage: props.devCareerMarketplaceHomePage,
@@ -28,6 +30,7 @@ export const getEnvConfig = (environment: string, props: any): IEnvConfig => {
       jobTypeTermId: props.uatJobTypeTermId,
       programAreaTermId: props.uatProgramAreaTermId,
       programAreaColumnName: props.uatProgramAreaColumnName,
+      jobTypeColumnName: props.uatJobTypeColumnName,
       authClientId: props.uatAuthClientId,
       deleteAPIURL: props.uatDeleteAPIURL,
       careerMarketplaceHomePage: props.uatCareerMarketplaceHomePage,
@@ -38,6 +41,7 @@ export const getEnvConfig = (environment: string, props: any): IEnvConfig => {
       jobTypeTermId: props.prodJobTypeTermId,
       programAreaTermId: props.prodProgramAreaTermId,
       programAreaColumnName: props.prodProgramAreaColumnName,
+      jobTypeColumnName: props.prodJobTypeColumnName,
       authClientId: props.prodAuthClientId,
       deleteAPIURL: props.prodDeleteAPIURL,
       careerMarketplaceHomePage: props.prodCareerMarketplaceHomePage,

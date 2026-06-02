@@ -24,6 +24,7 @@ export interface ISpfxCmDetailsWebPartProps {
     devJobTypeTermId: string;
     devProgramAreaTermId: string;
     devProgramAreaColumnName: string;
+    devJobTypeColumnName: string;
     devAuthClientId: string;
     devDeleteAPIURL: string;
     devCareerMarketplaceHomePage: string;
@@ -32,6 +33,7 @@ export interface ISpfxCmDetailsWebPartProps {
     uatJobTypeTermId: string;
     uatProgramAreaTermId: string;
     uatProgramAreaColumnName: string;
+    uatJobTypeColumnName: string;
     uatAuthClientId: string;
     uatDeleteAPIURL: string;
     uatCareerMarketplaceHomePage: string;
@@ -40,6 +42,7 @@ export interface ISpfxCmDetailsWebPartProps {
     prodJobTypeTermId: string;
     prodProgramAreaTermId: string;
     prodProgramAreaColumnName: string;
+    prodJobTypeColumnName: string;
     prodAuthClientId: string;
     prodDeleteAPIURL: string;
     prodCareerMarketplaceHomePage: string;
@@ -68,6 +71,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         devJobTypeTermId: this.properties.devJobTypeTermId,
         devProgramAreaTermId: this.properties.devProgramAreaTermId,
         devProgramAreaColumnName: this.properties.devProgramAreaColumnName,
+        devJobTypeColumnName: this.properties.devJobTypeColumnName,
         devAuthClientId: this.properties.devAuthClientId,
         devDeleteAPIURL: this.properties.devDeleteAPIURL,
         devCareerMarketplaceHomePage: this.properties.devCareerMarketplaceHomePage,
@@ -76,6 +80,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         uatJobTypeTermId: this.properties.uatJobTypeTermId,
         uatProgramAreaTermId: this.properties.uatProgramAreaTermId,
         uatProgramAreaColumnName: this.properties.uatProgramAreaColumnName,
+        uatJobTypeColumnName: this.properties.uatJobTypeColumnName,
         uatAuthClientId: this.properties.uatAuthClientId,
         uatDeleteAPIURL: this.properties.uatDeleteAPIURL,
         uatCareerMarketplaceHomePage: this.properties.uatCareerMarketplaceHomePage,
@@ -84,6 +89,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         prodJobTypeTermId: this.properties.prodJobTypeTermId,
         prodProgramAreaTermId: this.properties.prodProgramAreaTermId,
         prodProgramAreaColumnName: this.properties.prodProgramAreaColumnName,
+        prodJobTypeColumnName: this.properties.prodJobTypeColumnName,
         prodAuthClientId: this.properties.prodAuthClientId,
         prodDeleteAPIURL: this.properties.prodDeleteAPIURL,
         prodCareerMarketplaceHomePage: this.properties.prodCareerMarketplaceHomePage,
@@ -222,6 +228,10 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                    label: 'Program Area Column Name',
                    description: 'The name of the program area column.'
                  }),
+                 PropertyPaneTextField('devJobTypeColumnName', {
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
                   PropertyPaneTextField('devAuthClientId', {
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
@@ -238,7 +248,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Edit Opportunity Page URL',
                     description: 'The URL of the edit opportunity page.'
                   }),
-                 
+                  
                 ]
               }] : []),
 
@@ -263,6 +273,10 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                    label: 'Program Area Column Name',
                    description: 'The name of the program area column.'
                  }),
+                  PropertyPaneTextField('uatJobTypeColumnName', {
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
                   PropertyPaneTextField('uatAuthClientId', {
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
@@ -279,6 +293,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Edit Opportunity Page URL',
                     description: 'The URL of the edit opportunity page.'
                   }),
+                 
                 ]
               }]: []),
 
@@ -303,6 +318,10 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                    label: 'Program Area Column Name',
                    description: 'The name of the program area column.'
                  }),
+                 PropertyPaneTextField('prodJobTypeColumnName', {  
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
                   PropertyPaneTextField('prodAuthClientId', {
                     label: 'Authentication Client ID',
                     description: 'The ID of the authentication client.'
@@ -311,7 +330,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Delete API URL',
                     description: 'The URL of the delete API.'
                   }),
-                  PropertyPaneTextField('prodcareerMarketplaceHomePage', {
+                  PropertyPaneTextField('prodCareerMarketplaceHomePage', {
                     label: 'Career Marketplace Home Page URL',
                     description: 'The URL of the career marketplace home page.'
                   }),
@@ -319,6 +338,7 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                     label: 'Edit Opportunity Page URL',
                     description: 'The URL of the edit opportunity page.'
                   }),
+                  
                 ]
               }]: []),
               {

@@ -27,6 +27,7 @@
       "devJobTypeTermId": "45f37f08-3ff4-4d84-bf21-4a77ddffcf3e",
       "devProgramAreaTermId": "bd807536-d8e7-456b-aab0-fae3eecedd8a",
       "devProgramAreaColumnName": "Program_Area",
+      "devJobTypeColumnName": "JobType",
       "devAuthClientId": "c121f403-ff41-4db3-8426-f3b9c5016cd4",
       "devDeleteAPIURL": "https://appsvc-function-dev-cm-listmgmt-dotnet001.azurewebsites.net/api/DeleteJobOpportunity?",
       "devCareerMarketplaceHomePage": "https://devgcx.sharepoint.com/sites/CM-test",
