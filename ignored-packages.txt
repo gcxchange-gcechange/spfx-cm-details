@@ -5,3 +5,4 @@ jsonpath-plus
 path-to-regexp
 semver
 validator
+fast-uri
