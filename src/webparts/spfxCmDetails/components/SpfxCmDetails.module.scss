@@ -110,7 +110,7 @@ h1, h2 {
   padding-top: 20px;
 }
 
-.margin_edit_buttom {
+.margin_edit_button {
     margin-left: 5%;
 }
 
@@ -194,8 +194,8 @@ h1, h2 {
 }
 
 @media print {
-  .margin_edit_buttom,
-  .no-print {
+  .margin_edit_button,
+  .noPrint {
     display: none;
   }
 }
