@@ -3,9 +3,11 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   type IPropertyPaneConfiguration,
-    PropertyPaneDropdown
+    PropertyPaneDropdown,
+    PropertyPaneTextField,
+    PropertyPaneChoiceGroup
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart,  WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpfxCmDetailsWebPartStrings';
@@ -17,6 +19,35 @@ export interface ISpfxCmDetailsWebPartProps {
     description: string;
     context: WebPartContext;
     prefLang: string;
+    environment: string;
+    devCareerMarketplaceTermSetId: string;
+    devJobTypeTermId: string;
+    devProgramAreaTermId: string;
+    devProgramAreaColumnName: string;
+    devJobTypeColumnName: string;
+    devAuthClientId: string;
+    devDeleteAPIURL: string;
+    devCareerMarketplaceHomePage: string;
+    devEditOpportunityPage: string;
+    uatCareerMarketplaceTermSetId: string;
+    uatJobTypeTermId: string;
+    uatProgramAreaTermId: string;
+    uatProgramAreaColumnName: string;
+    uatJobTypeColumnName: string;
+    uatAuthClientId: string;
+    uatDeleteAPIURL: string;
+    uatCareerMarketplaceHomePage: string;
+    uatEditOpportunityPage: string;
+    prodCareerMarketplaceTermSetId: string;
+    prodJobTypeTermId: string;
+    prodProgramAreaTermId: string;
+    prodProgramAreaColumnName: string;
+    prodJobTypeColumnName: string;
+    prodAuthClientId: string;
+    prodDeleteAPIURL: string;
+    prodCareerMarketplaceHomePage: string;
+    prodEditOpportunityPage: string;
+    list: string;
 }
 
 export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmDetailsWebPartProps> {
@@ -35,6 +66,35 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
           userDisplayName: this.context.pageContext.user.displayName,
         prefLang: this.properties.prefLang,
+        environment: this.properties.environment,
+        devCareerMarketplaceTermSetId: this.properties.devCareerMarketplaceTermSetId,
+        devJobTypeTermId: this.properties.devJobTypeTermId,
+        devProgramAreaTermId: this.properties.devProgramAreaTermId,
+        devProgramAreaColumnName: this.properties.devProgramAreaColumnName,
+        devJobTypeColumnName: this.properties.devJobTypeColumnName,
+        devAuthClientId: this.properties.devAuthClientId,
+        devDeleteAPIURL: this.properties.devDeleteAPIURL,
+        devCareerMarketplaceHomePage: this.properties.devCareerMarketplaceHomePage,
+        devEditOpportunityPage: this.properties.devEditOpportunityPage,
+        uatCareerMarketplaceTermSetId: this.properties.uatCareerMarketplaceTermSetId,
+        uatJobTypeTermId: this.properties.uatJobTypeTermId,
+        uatProgramAreaTermId: this.properties.uatProgramAreaTermId,
+        uatProgramAreaColumnName: this.properties.uatProgramAreaColumnName,
+        uatJobTypeColumnName: this.properties.uatJobTypeColumnName,
+        uatAuthClientId: this.properties.uatAuthClientId,
+        uatDeleteAPIURL: this.properties.uatDeleteAPIURL,
+        uatCareerMarketplaceHomePage: this.properties.uatCareerMarketplaceHomePage,
+        uatEditOpportunityPage  : this.properties.uatEditOpportunityPage,
+        prodCareerMarketplaceTermSetId: this.properties.prodCareerMarketplaceTermSetId,
+        prodJobTypeTermId: this.properties.prodJobTypeTermId,
+        prodProgramAreaTermId: this.properties.prodProgramAreaTermId,
+        prodProgramAreaColumnName: this.properties.prodProgramAreaColumnName,
+        prodJobTypeColumnName: this.properties.prodJobTypeColumnName,
+        prodAuthClientId: this.properties.prodAuthClientId,
+        prodDeleteAPIURL: this.properties.prodDeleteAPIURL,
+        prodCareerMarketplaceHomePage: this.properties.prodCareerMarketplaceHomePage,
+        prodEditOpportunityPage: this.properties.prodEditOpportunityPage,
+        list: this.properties.list
       }
     );
 
@@ -99,10 +159,23 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
     return Version.parse('1.0');
   }
 
+  protected onPropertyPaneFieldChanged(propertyPath: string): void {
+    console.log(`Property pane field changed: ${propertyPath}`);
+    if (propertyPath === 'environment') {
+      this.context.propertyPane.refresh();
+    }
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+
+    const isDEV = this.properties.environment === 'dev';
+    const isUAT = this.properties.environment === 'uat';
+    const isPROD = this.properties.environment === 'prod';
+
     return {
       pages: [
         {
+          displayGroupsAsAccordion: true,
           header: {
             description: strings.PropertyPaneDescription
           },
@@ -119,10 +192,169 @@ export default class SpfxCmDetailsWebPart extends BaseClientSideWebPart<ISpfxCmD
                       ]
                   }),
               ]
-            }
+            },
+             {
+              groupName: "Environment Settings",
+                groupFields: [
+                  PropertyPaneChoiceGroup('environment', {
+                    label: 'Environment Configuration',
+
+                    options: [
+                      { key: 'dev', text: 'Development' },
+                      { key: 'uat', text: 'UAT' },
+                      { key: 'prod', text: 'Production' },
+                    ]
+                  })
+                ]
+            },
+            ...(isDEV ? [
+              {
+                groupName: 'DEV Settings',
+                isCollapsed:true,
+                groupFields: [
+                  PropertyPaneTextField('devCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
+                  }),
+                  PropertyPaneTextField('devJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('devProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('devProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                 PropertyPaneTextField('devJobTypeColumnName', {
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
+                  PropertyPaneTextField('devAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
+                  }),
+                   PropertyPaneTextField('devDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('devCareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('devEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
+                  }),
+                  
+                ]
+              }] : []),
+
+              ...(isUAT ? [
+              {
+                groupName: 'UAT Settings',
+                isCollapsed:true,
+                groupFields: [
+                    PropertyPaneTextField('uatCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
+                  }),
+                  PropertyPaneTextField('uatJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('uatProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('uatProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                  PropertyPaneTextField('uatJobTypeColumnName', {
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
+                  PropertyPaneTextField('uatAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
+                  }),
+                   PropertyPaneTextField('uatDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('uatCareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('uatEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
+                  }),
+                 
+                ]
+              }]: []),
+
+              ...(isPROD ? [
+              {
+                groupName: 'PROD Settings',
+                isCollapsed:true,
+                groupFields: [
+                  PropertyPaneTextField('prodCareerMarketplaceTermSetId', {
+                    label: 'Career Marketplace Term Set ID',
+                    description: 'The ID of the career marketplace term set.'
+                  }),
+                  PropertyPaneTextField('prodJobTypeTermId', {
+                    label: 'Job Type Term ID',
+                    description: 'The ID of the job type term set.'
+                  }),
+                  PropertyPaneTextField('prodProgramAreaTermId', {
+                   label: 'Program Area Term ID',
+                   description: 'The ID of the program area term set.'
+                 }),
+                  PropertyPaneTextField('prodProgramAreaColumnName', {
+                   label: 'Program Area Column Name',
+                   description: 'The name of the program area column.'
+                 }),
+                 PropertyPaneTextField('prodJobTypeColumnName', {  
+                    label: 'Job Type Column Name',
+                    description: 'The name of the job type column.'
+                  }),
+                  PropertyPaneTextField('prodAuthClientId', {
+                    label: 'Authentication Client ID',
+                    description: 'The ID of the authentication client.'
+                  }),
+                  PropertyPaneTextField('prodDeleteAPIURL', {
+                    label: 'Delete API URL',
+                    description: 'The URL of the delete API.'
+                  }),
+                  PropertyPaneTextField('prodCareerMarketplaceHomePage', {
+                    label: 'Career Marketplace Home Page URL',
+                    description: 'The URL of the career marketplace home page.'
+                  }),
+                  PropertyPaneTextField('prodEditOpportunityPage', {
+                    label: 'Edit Opportunity Page URL',
+                    description: 'The URL of the edit opportunity page.'
+                  }),
+                  
+                ]
+              }]: []),
+              {
+                groupName: 'Job Opportunity List Settings',
+                groupFields:[
+                  PropertyPaneTextField('list', {
+                    label: 'Job Opportunity List Name',
+                    description: 'The name of the job opportunity list.'
+                   }),
+                ]
+              }
+              
           ]
         }
       ]
     };
   }
 }
+
