@@ -322,7 +322,9 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
                 SkillsFr: skillsFr,
                 WorkSchedule: item.WorkSchedule,
                 Created: item.Created.split('T')[0], // convert into format YYYY/MM/DD 
-            })
+            });
+
+            this.setPageTitle(this.props.prefLang === "fr-fr" ? item.JobTitleFr : item.JobTitleEn);
         } catch(e) {
             console.error(e);
             this.setState({
@@ -416,6 +418,11 @@ export default class SpfxCmDetails extends React.Component<ISpfxCmDetailsProps, 
         return template
             .replace(/{userName}/g, userName)
             .replace('{contactName}', contactName);
+    }
+
+    private setPageTitle = (title: string): void => {
+        if (title !== null && title !== '')
+            document.title = title;
     }
  
     public render(): React.ReactElement<ISpfxCmDetailsProps> {
