@@ -32,6 +32,7 @@ Used SharePoint Framework Webpart or Sharepoint Framework Extension
 Version|Date|Comments
 -------|----|--------
 1.0|Dec 23, 2024|Initial release
+2.0|Nov 05, 2026|SPFx 1.22.2 update
 
 ## Minimal Path to Awesome
 
@@ -39,13 +40,14 @@ Version|Date|Comments
 - Ensure that you are at the solution folder
 - In the command-line run:
   - **npm install**
-  - **gulp serve**
+  - **npm start**
 - To debug in the front end:
   - go to the `serve.json` file and update `initialPage` to `https://domain-name.sharepoint.com/_layouts/15/workbench.aspx`
-  - Run the command **gulp serve**
+  - Run the command **npm start**
 - To deploy: in the command-line run
-  - **gulp bundle --ship**
-  - **gulp package-solution --ship**
+  - **npx heft clean**
+  - **npx heft build --production**
+  - **npx heft package-solution --production**
 - Add the webpart to your tenant app store
 - Approve the web API permissions
 

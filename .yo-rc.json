@@ -2,12 +2,12 @@
   "@microsoft/generator-sharepoint": {
     "plusBeta": false,
     "isCreatingSolution": true,
-    "nodeVersion": "18.19.1",
+    "nodeVersion": "22.22.1",
     "sdksVersions": {
       "@microsoft/microsoft-graph-client": "3.0.2",
       "@microsoft/teams-js": "2.24.0"
     },
-    "version": "1.20.0",
+    "version": "1.22.2",
     "libraryName": "spfx-cm-details",
     "libraryId": "7f489890-0e76-419f-8efb-f5f23c1cdb4b",
     "environment": "spo",
